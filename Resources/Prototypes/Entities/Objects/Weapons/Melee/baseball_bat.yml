@@ -17,7 +17,7 @@
       types:
         Blunt: 8
   - type: Item
-    size: 80
+    size: 20
   - type: Clothing
     quickEquip: false
     slots:

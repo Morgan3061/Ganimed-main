@@ -7,7 +7,6 @@ let
     SDL2
     libGL
     openal
-    glibc
     freetype
     fluidsynth
     soundfont-fluid

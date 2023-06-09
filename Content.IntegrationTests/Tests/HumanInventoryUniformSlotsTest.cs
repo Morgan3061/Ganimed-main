@@ -69,11 +69,12 @@ namespace Content.IntegrationTests.Tests
             EntityUid pocketItem = default;
 
             InventorySystem invSystem = default!;
-            var entityMan = server.ResolveDependency<IEntityManager>();
 
             await server.WaitAssertion(() =>
             {
-                invSystem = entityMan.System<InventorySystem>();
+                invSystem = IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<InventorySystem>();
+                var mapMan = IoCManager.Resolve<IMapManager>();
+                var entityMan = IoCManager.Resolve<IEntityManager>();
 
                 human = entityMan.SpawnEntity("HumanDummy", coordinates);
                 uniform = entityMan.SpawnEntity("UniformDummy", coordinates);
@@ -95,8 +96,8 @@ namespace Content.IntegrationTests.Tests
                 Assert.That(invSystem.CanEquip(human, tooBigItem, "pocket1", out _), Is.False); // Still failing!
                 Assert.That(invSystem.TryEquip(human, pocketItem, "pocket1"));
 
-                Assert.That(IsDescendant(idCard, human, entityMan));
-                Assert.That(IsDescendant(pocketItem, human, entityMan));
+                Assert.That(IsDescendant(idCard, human));
+                Assert.That(IsDescendant(pocketItem, human));
 
                 // Now drop the jumpsuit.
                 Assert.That(invSystem.TryUnequip(human, "jumpsuit"));
@@ -107,9 +108,9 @@ namespace Content.IntegrationTests.Tests
             await server.WaitAssertion(() =>
             {
                 // Items have been dropped!
-                Assert.That(IsDescendant(uniform, human, entityMan), Is.False);
-                Assert.That(IsDescendant(idCard, human, entityMan), Is.False);
-                Assert.That(IsDescendant(pocketItem, human, entityMan), Is.False);
+                Assert.That(IsDescendant(uniform, human), Is.False);
+                Assert.That(IsDescendant(idCard, human), Is.False);
+                Assert.That(IsDescendant(pocketItem, human), Is.False);
 
                 // Ensure everything null here.
                 Assert.That(!invSystem.TryGetSlotEntity(human, "jumpsuit", out _));
@@ -120,9 +121,9 @@ namespace Content.IntegrationTests.Tests
             await pairTracker.CleanReturnAsync();
         }
 
-        private static bool IsDescendant(EntityUid descendant, EntityUid parent, IEntityManager entManager)
+        private static bool IsDescendant(EntityUid descendant, EntityUid parent)
         {
-            var xforms = entManager.GetEntityQuery<TransformComponent>();
+            var xforms = IoCManager.Resolve<IEntityManager>().GetEntityQuery<TransformComponent>();
             var tmpParent = xforms.GetComponent(descendant).ParentUid;
             while (tmpParent.IsValid())
             {

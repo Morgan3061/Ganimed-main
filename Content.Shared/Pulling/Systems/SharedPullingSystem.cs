@@ -70,7 +70,7 @@ namespace Content.Shared.Pulling
 
         private void OnJointRemoved(EntityUid uid, SharedPullableComponent component, JointRemovedEvent args)
         {
-            if (component.Puller != args.OtherEntity)
+            if (component.Puller != args.OtherBody.Owner)
                 return;
 
             // Do we have some other join with our Puller?

@@ -57,6 +57,7 @@
   components:
   - type: Sprite
     sprite: Objects/Specific/Medical/medipen.rsi
+    netsync: false
     layers:
     - state: medipen
       map: ["enum.SolutionContainerLayers.Fill"]
@@ -114,11 +115,6 @@
   id: AntiPoisonMedipen
   description: A rapid dose of anti-poison. Contains ultravasculine and epinephrine.
   components:
-  - type: Sprite
-    sprite: Objects/Specific/Medical/medipen.rsi
-    layers:
-    - state: penacid
-      map: ["enum.SolutionContainerLayers.Fill"]
   - type: SolutionContainerManager
     solutions:
       pen:
@@ -139,6 +135,7 @@
   components:
   - type: Sprite
     sprite: Objects/Specific/Medical/medipen.rsi
+    netsync: false
     layers:
     - state: hypovolemic
       map: [ "enum.SolutionContainerLayers.Fill" ]
@@ -168,11 +165,6 @@
   id: Stimpack
   description: Contains enough stimulants for you to have the chemical's effect for 5 minutes. Use it when you're sure you're ready to throw down.
   components:
-  - type: Sprite
-    sprite: Objects/Specific/Medical/medipen.rsi
-    layers:
-    - state: stimpen
-      map: ["enum.SolutionContainerLayers.Fill"]
   - type: Item
     sprite: Objects/Specific/Medical/medipen.rsi
     size: 10
@@ -197,11 +189,6 @@
   id: StimpackMini
   description: A microinjector of stimulants that give you about one minute of the chemical's effects.
   components:
-  - type: Sprite
-    sprite: Objects/Specific/Medical/medipen.rsi
-    layers:
-    - state: stimpen
-      map: ["enum.SolutionContainerLayers.Fill"]
   - type: Item
     sprite: Objects/Specific/Medical/medipen.rsi
     size: 5
@@ -223,11 +210,6 @@
   id: StimpackExperimental
   description: There's a red label on the side of it. It says "PRODUCT HAS EXTREME SIDE EFFECTS, PRODUCTION HALTED. DO NOT DISTRIBUTE."
   components:
-  - type: Sprite
-    sprite: Objects/Specific/Medical/medipen.rsi
-    layers:
-    - state: stimpen
-      map: ["enum.SolutionContainerLayers.Fill"]
   - type: Item
     sprite: Objects/Specific/Medical/medipen.rsi
     size: 10
@@ -276,6 +258,7 @@
   - type: Sprite
     sprite: Objects/Storage/penbox.rsi
     state: hypopen
+    netsync: false
   - type: SpawnItemsOnUse
     items:
     - id: Hypopen

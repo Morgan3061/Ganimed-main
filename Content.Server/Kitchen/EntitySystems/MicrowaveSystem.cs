@@ -479,19 +479,15 @@ namespace Content.Server.Kitchen.EntitySystems
             UpdateUserInterfaceState(uid, component);
         }
 
-        private void OnSelectTime(EntityUid uid, MicrowaveComponent comp, MicrowaveSelectCookTimeMessage args)
+        private void OnSelectTime(EntityUid uid, MicrowaveComponent component, MicrowaveSelectCookTimeMessage args)
         {
-            if (!HasContents(comp) || HasComp<ActiveMicrowaveComponent>(uid) || !(TryComp<ApcPowerReceiverComponent>(uid, out var apc) && apc.Powered))
+            if (!HasContents(component) || HasComp<ActiveMicrowaveComponent>(uid) || !(TryComp<ApcPowerReceiverComponent>(uid, out var apc) && apc.Powered))
                 return;
 
-            // some validation to prevent trollage
-            if (args.NewCookTime % 5 != 0 || args.NewCookTime > comp.MaxCookTime)
-                return;
-
-            comp.CurrentCookTimeButtonIndex = args.ButtonIndex;
-            comp.CurrentCookTimerTime = args.NewCookTime;
-            _audio.PlayPvs(comp.ClickSound, uid, AudioParams.Default.WithVolume(-2));
-            UpdateUserInterfaceState(uid, comp);
+            component.CurrentCookTimeButtonIndex = args.ButtonIndex;
+            component.CurrentCookTimerTime = args.NewCookTime;
+            _audio.PlayPvs(component.ClickSound, uid, AudioParams.Default.WithVolume(-2));
+            UpdateUserInterfaceState(uid, component);
         }
         #endregion
     }

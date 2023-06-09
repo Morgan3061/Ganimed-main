@@ -18,13 +18,6 @@
   - type: Tag
     tags:
       - Trash
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: Fat
-        Quantity: 3
-      - ReagentId: Blood
-        Quantity: 10
 
 - type: entity
   id: TorsoHuman
@@ -40,13 +33,6 @@
     state: "torso_m"
   - type: BodyPart
     partType: Torso
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: Fat
-        Quantity: 10
-      - ReagentId: Blood
-        Quantity: 20
 
 - type: entity
   id: HeadHuman
@@ -68,13 +54,6 @@
   - type: Tag
     tags:
       - Head
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: Fat
-        Quantity: 5
-      - ReagentId: Blood
-        Quantity: 10
 
 - type: entity
   id: LeftArmHuman

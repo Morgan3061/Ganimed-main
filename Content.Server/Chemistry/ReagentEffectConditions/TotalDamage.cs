@@ -1,7 +1,6 @@
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
-using Robust.Shared.Prototypes;
 
 namespace Content.Server.Chemistry.ReagentEffectConditions
 {
@@ -23,13 +22,6 @@ namespace Content.Server.Chemistry.ReagentEffectConditions
             }
 
             return false;
-        }
-
-        public override string GuidebookExplanation(IPrototypeManager prototype)
-        {
-            return Loc.GetString("reagent-effect-condition-guidebook-total-damage",
-                ("max", Max == FixedPoint2.MaxValue ? (float) int.MaxValue : Max.Float()),
-                ("min", Min.Float()));
         }
     }
 }

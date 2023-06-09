@@ -20,15 +20,14 @@ namespace Content.IntegrationTests.Tests
             await using var pairTracker = await PoolManager.GetServerClient(new PoolSettings{NoClient = true});
             var server = pairTracker.Pair.Server;
             var testMap = await PoolManager.CreateTestMap(pairTracker);
-            var entMgr = server.ResolveDependency<IEntityManager>();
-            var sysManager = server.ResolveDependency<IEntitySystemManager>();
             var coordinates = testMap.GridCoords;
 
             await server.WaitAssertion(() =>
             {
                 // Spawn everything.
-                var invSystem = sysManager.GetEntitySystem<InventorySystem>();
+                var invSystem = IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<InventorySystem>();
 
+                var entMgr = IoCManager.Resolve<IEntityManager>();
                 var container = entMgr.SpawnEntity(null, coordinates);
                 entMgr.EnsureComponent<InventoryComponent>(container);
                 entMgr.EnsureComponent<ContainerManagerComponent>(container);
@@ -36,7 +35,7 @@ namespace Content.IntegrationTests.Tests
                 var child = entMgr.SpawnEntity(null, coordinates);
                 var item = entMgr.EnsureComponent<ClothingComponent>(child);
 
-                sysManager.GetEntitySystem<ClothingSystem>().SetSlots(child, SlotFlags.HEAD, item);
+                IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<ClothingSystem>().SetSlots(item.Owner, SlotFlags.HEAD, item);
 
                 // Equip item.
                 Assert.That(invSystem.TryEquip(container, child, "head"), Is.True);

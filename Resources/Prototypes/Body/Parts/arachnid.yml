@@ -13,13 +13,6 @@
     containers:
       bodypart: !type:Container
         ents: []
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: Fat
-        Quantity: 3
-      - ReagentId: SpiderBlood
-        Quantity: 10
 
 - type: entity
   id: TorsoArachnid
@@ -35,13 +28,6 @@
     state: "torso_m"
   - type: BodyPart
     partType: Torso
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: Fat
-        Quantity: 10
-      - ReagentId: SpiderBlood
-        Quantity: 20
 
 - type: entity
   id: HeadArachnid
@@ -68,13 +54,6 @@
   - type: Tag
     tags:
       - Head
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: Fat
-        Quantity: 5
-      - ReagentId: SpiderBlood
-        Quantity: 10
 
 - type: entity
   id: LeftArmArachnid

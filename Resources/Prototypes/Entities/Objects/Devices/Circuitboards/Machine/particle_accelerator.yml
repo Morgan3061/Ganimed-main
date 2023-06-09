@@ -48,43 +48,43 @@
 # Emitter
 
 - type: entity
-  id: MachineParticleAcceleratorEmitterStarboardCircuitboard
+  id: MachineParticleAcceleratorEmitterLeftCircuitboard
   parent: BaseMachineCircuitboard
-  name: PA starboard emitter board
+  name: PA emitter left board
   description: A machine board for a particle accelerator left emitter
   components:
     - type: Sprite
       state: engineering
     - type: MachineBoard
-      prototype: ParticleAcceleratorEmitterStarboardUnfinished
+      prototype: ParticleAcceleratorEmitterLeftUnfinished
       materialRequirements:
         Glass: 5
         Steel: 5
 
 - type: entity
-  id: MachineParticleAcceleratorEmitterForeCircuitboard
+  id: MachineParticleAcceleratorEmitterCenterCircuitboard
   parent: BaseMachineCircuitboard
-  name: PA fore emitter board
+  name: PA emitter center board
   description: A machine board for a particle accelerator center emitter
   components:
     - type: Sprite
       state: engineering
     - type: MachineBoard
-      prototype: ParticleAcceleratorEmitterForeUnfinished
+      prototype: ParticleAcceleratorEmitterCenterUnfinished
       materialRequirements:
         Glass: 5
         Steel: 5
 
 - type: entity
-  id: MachineParticleAcceleratorEmitterPortCircuitboard
+  id: MachineParticleAcceleratorEmitterRightCircuitboard
   parent: BaseMachineCircuitboard
-  name: PA port emitter board
+  name: PA emitter right board
   description: A machine board for a particle accelerator right emitter
   components:
     - type: Sprite
       state: engineering
     - type: MachineBoard
-      prototype: ParticleAcceleratorEmitterPortUnfinished
+      prototype: ParticleAcceleratorEmitterRightUnfinished
       materialRequirements:
         Glass: 5
         Steel: 5

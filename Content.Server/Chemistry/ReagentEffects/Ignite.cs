@@ -1,7 +1,6 @@
 ﻿using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Database;
-using Robust.Shared.Prototypes;
 
 namespace Content.Server.Chemistry.ReagentEffects;
 
@@ -11,10 +10,6 @@ namespace Content.Server.Chemistry.ReagentEffects;
 public sealed class Ignite : ReagentEffect
 {
     public override bool ShouldLog => true;
-
-    protected override string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys)
-        => Loc.GetString("reagent-effect-guidebook-ignite", ("chance", Probability));
-
     public override LogImpact LogImpact => LogImpact.Medium;
 
     public override void Effect(ReagentEffectArgs args)

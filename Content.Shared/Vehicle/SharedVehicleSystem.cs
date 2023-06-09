@@ -106,15 +106,13 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         // Add Rider
         if (args.Buckling)
         {
-            if (component.UseHand == true)
+            // Add a virtual item to rider's hand, unbuckle if we can't.
+            if (!_virtualItemSystem.TrySpawnVirtualItemInHand(uid, args.BuckledEntity))
             {
-                // Add a virtual item to rider's hand, unbuckle if we can't.
-                if (!_virtualItemSystem.TrySpawnVirtualItemInHand(uid, args.BuckledEntity))
-                {
-                    _buckle.TryUnbuckle(uid, uid, true);
-                    return;
-                }
+                _buckle.TryUnbuckle(uid, uid, true);
+                return;
             }
+
             // Set up the rider and vehicle with each other
             EnsureComp<InputMoverComponent>(uid);
             var rider = EnsureComp<RiderComponent>(args.BuckledEntity);
@@ -150,9 +148,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         // Clean up actions and virtual items
         _actionsSystem.RemoveProvidedActions(args.BuckledEntity, uid);
-
-        if (component.UseHand == true)
-            _virtualItemSystem.DeleteInHandsMatching(args.BuckledEntity, uid);
+        _virtualItemSystem.DeleteInHandsMatching(args.BuckledEntity, uid);
 
 
         // Entity is no longer riding

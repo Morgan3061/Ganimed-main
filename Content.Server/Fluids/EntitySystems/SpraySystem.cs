@@ -4,6 +4,7 @@ using Content.Server.Cooldown;
 using Content.Server.Extinguisher;
 using Content.Server.Fluids.Components;
 using Content.Server.Popups;
+using Content.Shared.Chemistry.Components;
 using Content.Shared.Cooldown;
 using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
@@ -61,6 +62,9 @@ public sealed class SpraySystem : EntitySystem
             return;
         }
 
+        if (!TryComp<SolutionTransferComponent>(uid, out var transfer))
+            return;
+
         var xformQuery = GetEntityQuery<TransformComponent>();
         var userXform = xformQuery.GetComponent(args.User);
 
@@ -85,7 +89,7 @@ public sealed class SpraySystem : EntitySystem
         var threeQuarters = diffNorm * 0.75f;
         var quarter = diffNorm * 0.25f;
 
-        var amount = Math.Max(Math.Min((solution.Volume / component.TransferAmount).Int(), component.VaporAmount), 1);
+        var amount = Math.Max(Math.Min((solution.Volume / transfer.TransferAmount).Int(), component.VaporAmount), 1);
         var spread = component.VaporSpread / amount;
         // TODO: Just use usedelay homie.
         var cooldownTime = 0f;
@@ -103,7 +107,7 @@ public sealed class SpraySystem : EntitySystem
             if (distance > component.SprayDistance)
                 target = userMapPos.Offset(diffNorm * component.SprayDistance);
 
-            var newSolution = _solutionContainer.SplitSolution(uid, solution, component.TransferAmount);
+            var newSolution = _solutionContainer.SplitSolution(uid, solution, transfer.TransferAmount);
 
             if (newSolution.Volume <= FixedPoint2.Zero)
                 break;

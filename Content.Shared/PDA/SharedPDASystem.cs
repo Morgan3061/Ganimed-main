@@ -7,7 +7,7 @@ namespace Content.Shared.PDA
     public abstract class SharedPDASystem : EntitySystem
     {
         [Dependency] protected readonly ItemSlotsSystem ItemSlotsSystem = default!;
-        [Dependency] protected readonly SharedAppearanceSystem Appearance = default!;
+        [Dependency] protected readonly SharedAppearanceSystem _appearance = default!;
 
         public override void Initialize()
         {
@@ -55,7 +55,8 @@ namespace Content.Shared.PDA
 
         private void UpdatePdaAppearance(EntityUid uid, PDAComponent pda)
         {
-            Appearance.SetData(uid, PDAVisuals.IDCardInserted, pda.ContainedID != null);
+            if (TryComp(pda.Owner, out AppearanceComponent ? appearance))
+                _appearance.SetData(uid, PDAVisuals.IDCardInserted, pda.ContainedID != null, appearance);
         }
     }
 }

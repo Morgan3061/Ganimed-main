@@ -14,11 +14,10 @@ namespace Content.IntegrationTests.Tests
         {
             await using var pairTracker = await PoolManager.GetServerClient();
             var server = pairTracker.Pair.Server;
-            var sysManager = server.ResolveDependency<IEntitySystemManager>();
 
             await server.WaitPost(() =>
             {
-                sysManager.GetEntitySystem<GameTicker>().RestartRound();
+                IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<GameTicker>().RestartRound();
             });
 
             await PoolManager.RunTicksSync(pairTracker.Pair, 10);

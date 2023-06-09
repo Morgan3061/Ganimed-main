@@ -67,14 +67,13 @@ namespace Content.IntegrationTests.Tests.DoAfter
             await server.WaitIdleAsync();
 
             var entityManager = server.ResolveDependency<IEntityManager>();
-            var timing = server.ResolveDependency<IGameTiming>();
             var doAfterSystem = entityManager.EntitySysManager.GetEntitySystem<SharedDoAfterSystem>();
             var ev = new TestDoAfterEvent();
 
             // That it finishes successfully
             await server.WaitPost(() =>
             {
-                var tickTime = 1.0f / timing.TickRate;
+                var tickTime = 1.0f / IoCManager.Resolve<IGameTiming>().TickRate;
                 var mob = entityManager.SpawnEntity("Dummy", MapCoordinates.Nullspace);
                 var args = new DoAfterArgs(mob, tickTime / 2, ev, null) { Broadcast = true };
                 Assert.That(doAfterSystem.TryStartDoAfter(args));
@@ -93,14 +92,14 @@ namespace Content.IntegrationTests.Tests.DoAfter
             await using var pairTracker = await PoolManager.GetServerClient(new PoolSettings{NoClient = true, ExtraPrototypes = Prototypes});
             var server = pairTracker.Pair.Server;
             var entityManager = server.ResolveDependency<IEntityManager>();
-            var timing = server.ResolveDependency<IGameTiming>();
             var doAfterSystem = entityManager.EntitySysManager.GetEntitySystem<SharedDoAfterSystem>();
-            DoAfterId? id;
+            DoAfterId? id = default;
             var ev = new TestDoAfterEvent();
+
 
             await server.WaitPost(() =>
             {
-                var tickTime = 1.0f / timing.TickRate;
+                var tickTime = 1.0f / IoCManager.Resolve<IGameTiming>().TickRate;
 
                 var mob = entityManager.SpawnEntity("Dummy", MapCoordinates.Nullspace);
                 var args = new DoAfterArgs(mob, tickTime * 2, ev, null) { Broadcast = true };

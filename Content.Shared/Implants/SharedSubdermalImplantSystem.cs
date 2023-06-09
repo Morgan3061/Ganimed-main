@@ -2,9 +2,6 @@
 using Content.Shared.Actions;
 using Content.Shared.Actions.ActionTypes;
 using Content.Shared.Implants.Components;
-using Content.Shared.Interaction;
-using Content.Shared.Interaction.Events;
-using Content.Shared.Mobs;
 using Content.Shared.Tag;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
@@ -25,10 +22,6 @@ public abstract class SharedSubdermalImplantSystem : EntitySystem
         SubscribeLocalEvent<SubdermalImplantComponent, EntGotInsertedIntoContainerMessage>(OnInsert);
         SubscribeLocalEvent<SubdermalImplantComponent, ContainerGettingRemovedAttemptEvent>(OnRemoveAttempt);
         SubscribeLocalEvent<SubdermalImplantComponent, EntGotRemovedFromContainerMessage>(OnRemove);
-
-        SubscribeLocalEvent<ImplantedComponent, MobStateChangedEvent>(RelayToImplantEvent);
-        SubscribeLocalEvent<ImplantedComponent, AfterInteractUsingEvent>(RelayToImplantEvent);
-        SubscribeLocalEvent<ImplantedComponent, SuicideEvent>(RelayToImplantEvent);
     }
 
     private void OnInsert(EntityUid uid, SubdermalImplantComponent component, EntGotInsertedIntoContainerMessage args)
@@ -132,31 +125,5 @@ public abstract class SharedSubdermalImplantSystem : EntitySystem
         var implantContainer = implanted.ImplantContainer;
 
         _container.CleanContainer(implantContainer);
-    }
-
-    //Relays from the implanted to the implant
-    private void RelayToImplantEvent<T>(EntityUid uid, ImplantedComponent component, T args) where T : notnull
-    {
-        if (!_container.TryGetContainer(uid, ImplanterComponent.ImplantSlotId, out var implantContainer))
-            return;
-
-        var relayEv = new ImplantRelayEvent<T>(args);
-        foreach (var implant in implantContainer.ContainedEntities)
-        {
-            if (args is HandledEntityEventArgs { Handled : true })
-                return;
-
-            RaiseLocalEvent(implant, relayEv);
-        }
-    }
-}
-
-public sealed class ImplantRelayEvent<T> where T : notnull
-{
-    public readonly T Event;
-
-    public ImplantRelayEvent(T ev)
-    {
-        Event = ev;
     }
 }

@@ -33,9 +33,6 @@
     tags:
       - DroneUsable #No bucket because it holds chems, they can drag the cart or use a drain
       - Mop
-  - type: GuideHelp
-    guides:
-    - Janitorial
 
 - type: entity
   parent: BaseItem
@@ -101,7 +98,6 @@
       bucket:
         maxVol: 600
   - type: Spillable
-    solution: bucket
     spillDelay: 3.0
   - type: DrainableSolution
     solution: bucket
@@ -135,9 +131,6 @@
   - type: SolutionContainerVisuals
     maxFillLevels: 3
     fillBaseName: mopbucket_water-
-  - type: GuideHelp
-    guides:
-    - Janitorial
 
 - type: entity
   name: mop bucket
@@ -279,7 +272,6 @@
           mask:
           - MobMask
     - type: Spillable
-      solution: bucket
       spillDelay: 3.0
     - type: SolutionContainerManager
       solutions:
@@ -377,9 +369,6 @@
         mop_slot: !type:ContainerSlot {}
         trashbag_slot: !type:ContainerSlot {}
         bucket_slot: !type:ContainerSlot {}
-    - type: GuideHelp
-      guides:
-      - Janitorial
 
 - type: entity
   id: FloorDrain
@@ -433,9 +422,6 @@
             - !type:PlaySoundBehavior
               sound:
                 path: /Audio/Effects/metalbreak.ogg
-    - type: GuideHelp
-      guides:
-      - Janitorial
 
 - type: entity
   parent: BaseItem

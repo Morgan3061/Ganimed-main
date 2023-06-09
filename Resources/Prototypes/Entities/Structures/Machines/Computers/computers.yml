@@ -281,6 +281,13 @@
   name: criminal records computer
   description: This can be used to check criminal records.
   components:
+  - type: GeneralCriminalRecordConsole
+  - type: UserInterface
+    interfaces:
+      - key: enum.GeneralCriminalRecordConsoleKey.Key
+        type: GeneralCriminalRecordConsoleBoundUserInterface
+  - type: ActivatableUI
+    key: enum.GeneralCriminalRecordConsoleKey.Key
   - type: Sprite
     layers:
     - map: ["computerLayerBody"]
@@ -530,6 +537,10 @@
     access: [[ "Command" ]]
   - type: CommunicationsConsole
     title: comms-console-announcement-title-station
+    sound: # Corvax-Announcements
+      path: /Audio/Corvax/Announcements/announce.ogg
+      params:
+        volume: -4
   - type: ActivatableUI
     key: enum.CommunicationsConsoleUiKey.Key
   - type: UserInterface
@@ -757,9 +768,6 @@
   - type: Damageable
     damageContainer: Inorganic
     damageModifierSet: StrongMetallic
-  - type: GuideHelp
-    guides:
-    - Cloning
 
 - type: entity
   id: ComputerSalvageExpedition

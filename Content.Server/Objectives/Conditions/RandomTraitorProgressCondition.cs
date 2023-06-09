@@ -3,7 +3,6 @@ using Content.Server.Objectives.Interfaces;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using Content.Server.GameTicking.Rules;
-using Content.Server.Roles;
 
 namespace Content.Server.Objectives.Conditions
 {
@@ -18,7 +17,7 @@ namespace Content.Server.Objectives.Conditions
             var entityMgr = IoCManager.Resolve<IEntityManager>();
 
             var traitors = entityMgr.EntitySysManager.GetEntitySystem<TraitorRuleSystem>().GetOtherTraitorsAliveAndConnected(mind).ToList();
-            List<TraitorRole> removeList = new();
+            List<Traitor.TraitorRole> removeList = new();
 
             foreach (var traitor in traitors)
             {

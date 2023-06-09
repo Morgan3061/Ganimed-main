@@ -1,5 +1,6 @@
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
+using Content.Shared.Interaction;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -20,7 +21,7 @@ public sealed class MeleeWeaponComponent : Component
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
     [DataField("hidden")]
-    public bool HideFromExamine;
+    public bool HideFromExamine { get; set; } = false;
 
     /// <summary>
     /// Next time this component is allowed to light attack. Heavy attacks are wound up and never have a cooldown.
@@ -52,6 +53,7 @@ public sealed class MeleeWeaponComponent : Component
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
     public bool Attacking = false;
+	
 
     /// <summary>
     /// When did we start a heavy attack.
@@ -59,6 +61,12 @@ public sealed class MeleeWeaponComponent : Component
     /// <returns></returns>
     [ViewVariables(VVAccess.ReadWrite), DataField("windUpStart")]
     public TimeSpan? WindUpStart;
+
+    /// <summary>
+    /// How long it takes a heavy attack to windup.
+    /// </summary>
+    [ViewVariables]
+    public TimeSpan WindupTime => AttackRate > 0 ? TimeSpan.FromSeconds(1 / AttackRate * HeavyWindupModifier) : TimeSpan.Zero;
 
     /// <summary>
     /// Heavy attack windup time gets multiplied by this value and the light attack cooldown.

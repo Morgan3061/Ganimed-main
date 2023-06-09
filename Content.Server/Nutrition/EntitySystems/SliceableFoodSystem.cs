@@ -1,6 +1,5 @@
 using Content.Server.Chemistry.Components.SolutionManager;
 using Content.Server.Chemistry.EntitySystems;
-using Content.Server.Nutrition;
 using Content.Server.Nutrition.Components;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Examine;
@@ -52,12 +51,12 @@ namespace Content.Server.Nutrition.EntitySystems
                 return false;
             }
 
-            if (!TryComp<UtensilComponent>(usedItem, out var utensil) || (utensil.Types & UtensilType.Knife) == 0)
+            if (!EntityManager.TryGetComponent(usedItem, out UtensilComponent ? utensil) || (utensil.Types & UtensilType.Knife) == 0)
             {
                 return false;
             }
 
-            var sliceUid = Spawn(component.Slice, transform.Coordinates);
+            var sliceUid = EntityManager.SpawnEntity(component.Slice, transform.Coordinates);
 
             var lostSolution = _solutionContainerSystem.SplitSolution(uid, solution,
                 solution.Volume / FixedPoint2.New(component.Count));
@@ -92,7 +91,7 @@ namespace Content.Server.Nutrition.EntitySystems
             // If someone makes food proto with 1 slice...
             if (component.Count < 1)
             {
-                DeleteFood(uid, user);
+                EntityManager.DeleteEntity(uid);
                 return true;
             }
 
@@ -100,7 +99,7 @@ namespace Content.Server.Nutrition.EntitySystems
             if (component.Count > 1)
                 return true;
 
-            sliceUid = Spawn(component.Slice, transform.Coordinates);
+            sliceUid = EntityManager.SpawnEntity(component.Slice, transform.Coordinates);
 
             // Fill last slice with the rest of the solution
             FillSlice(sliceUid, solution);
@@ -116,26 +115,14 @@ namespace Content.Server.Nutrition.EntitySystems
                 xform.LocalRotation = 0;
             }
 
-            DeleteFood(uid, user);
+            EntityManager.DeleteEntity(uid);
             return true;
-        }
-
-        private void DeleteFood(EntityUid uid, EntityUid user)
-        {
-            var ev = new BeforeFullySlicedEvent
-            {
-                User = user
-            };
-            RaiseLocalEvent(uid, ev);
-
-            if (!ev.Cancelled)
-                Del(uid);
         }
 
         private void FillSlice(EntityUid sliceUid, Solution solution)
         {
             // Replace all reagents on prototype not just copying poisons (example: slices of eaten pizza should have less nutrition)
-            if (TryComp<FoodComponent>(sliceUid, out var sliceFoodComp) &&
+            if (EntityManager.TryGetComponent<FoodComponent>(sliceUid, out var sliceFoodComp) &&
                 _solutionContainerSystem.TryGetSolution(sliceUid, sliceFoodComp.SolutionName, out var itsSolution))
             {
                 _solutionContainerSystem.RemoveAllSolution(sliceUid, itsSolution);
@@ -148,9 +135,9 @@ namespace Content.Server.Nutrition.EntitySystems
         private void OnComponentStartup(EntityUid uid, SliceableFoodComponent component, ComponentStartup args)
         {
             component.Count = component.TotalCount;
-            var foodComp = EnsureComp<FoodComponent>(uid);
+            var foodComp = EntityManager.EnsureComponent<FoodComponent>(uid);
 
-            EnsureComp<SolutionContainerManagerComponent>(uid);
+            EntityManager.EnsureComponent<SolutionContainerManagerComponent>(uid);
             _solutionContainerSystem.EnsureSolution(uid, foodComp.SolutionName);
         }
 

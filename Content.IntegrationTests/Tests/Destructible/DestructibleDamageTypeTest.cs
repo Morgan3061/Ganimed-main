@@ -26,7 +26,6 @@ namespace Content.IntegrationTests.Tests.Destructible
 
             var sEntityManager = server.ResolveDependency<IEntityManager>();
             var sEntitySystemManager = server.ResolveDependency<IEntitySystemManager>();
-            var protoManager = server.ResolveDependency<IPrototypeManager>();
 
             EntityUid sDestructibleEntity = default;
             DamageableComponent sDamageableComponent = null;
@@ -38,7 +37,7 @@ namespace Content.IntegrationTests.Tests.Destructible
                 var coordinates = testMap.GridCoords;
 
                 sDestructibleEntity = sEntityManager.SpawnEntity(DestructibleDamageTypeEntityId, coordinates);
-                sDamageableComponent = sEntityManager.GetComponent<DamageableComponent>(sDestructibleEntity);
+                sDamageableComponent = IoCManager.Resolve<IEntityManager>().GetComponent<DamageableComponent>(sDestructibleEntity);
                 sTestThresholdListenerSystem = sEntitySystemManager.GetEntitySystem<TestDestructibleListenerSystem>();
                 sTestThresholdListenerSystem.ThresholdsReached.Clear();
                 sDamageableSystem = sEntitySystemManager.GetEntitySystem<DamageableSystem>();
@@ -53,8 +52,8 @@ namespace Content.IntegrationTests.Tests.Destructible
 
             await server.WaitAssertion(() =>
             {
-                var bluntDamageType = protoManager.Index<DamageTypePrototype>("TestBlunt");
-                var slashDamageType = protoManager.Index<DamageTypePrototype>("TestSlash");
+                var bluntDamageType = IoCManager.Resolve<IPrototypeManager>().Index<DamageTypePrototype>("TestBlunt");
+                var slashDamageType = IoCManager.Resolve<IPrototypeManager>().Index<DamageTypePrototype>("TestSlash");
 
                 var bluntDamage = new DamageSpecifier(bluntDamageType,5);
                 var slashDamage = new DamageSpecifier(slashDamageType,5);

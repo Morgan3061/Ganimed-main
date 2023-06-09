@@ -273,7 +273,7 @@
         key: SeeingRainbows
         component: SeeingRainbows
         type: Add
-        time: 16
+        time: 5
         refresh: false
 
 - type: reagent
@@ -283,7 +283,6 @@
   desc: reagent-desc-thc-oil
   physicalDesc: reagent-physical-desc-skunky
   flavor: bitter
-  flavorMinimum: 0.05
   color: "#DAA520"
   metabolisms:
     Narcotic:
@@ -292,7 +291,7 @@
         key: SeeingRainbows
         component: SeeingRainbows
         type: Add
-        time: 16
+        time: 5
         refresh: false
 
 - type: reagent

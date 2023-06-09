@@ -7,7 +7,6 @@ using Content.Server.Mind.Components;
 using Content.Server.Players;
 using Content.Server.Popups;
 using Content.Server.Preferences.Managers;
-using Content.Server.Roles;
 using Content.Server.RoundEnd;
 using Content.Server.Traitor;
 using Content.Server.Zombies;
@@ -165,9 +164,7 @@ public sealed class ZombieRuleSystem : GameRuleSystem<ZombieRuleComponent>
             var minPlayers = _cfg.GetCVar(CCVars.ZombieMinPlayers);
             if (!ev.Forced && ev.Players.Length < minPlayers)
             {
-                _chatManager.SendAdminAnnouncement(Loc.GetString("zombie-not-enough-ready-players",
-                    ("readyPlayersCount", ev.Players.Length),
-                    ("minimumPlayers", minPlayers)));
+                _chatManager.DispatchServerAnnouncement(Loc.GetString("zombie-not-enough-ready-players", ("readyPlayersCount", ev.Players.Length), ("minimumPlayers", minPlayers)));
                 ev.Cancel();
                 continue;
             }
@@ -287,7 +284,7 @@ public sealed class ZombieRuleSystem : GameRuleSystem<ZombieRuleComponent>
 
             DebugTools.AssertNotNull(mind.OwnedEntity);
 
-            mind.AddRole(new ZombieRole(mind, _prototypeManager.Index<AntagPrototype>(component.PatientZeroPrototypeID)));
+            mind.AddRole(new TraitorRole(mind, _prototypeManager.Index<AntagPrototype>(component.PatientZeroPrototypeID)));
 
             var inCharacterName = string.Empty;
             // Create some variation between the times of each zombie, relative to the time of the group as a whole.

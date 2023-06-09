@@ -2,7 +2,6 @@ using Content.Server.Botany.Components;
 using Content.Server.Botany.Systems;
 using Content.Shared.Chemistry.Reagent;
 using JetBrains.Annotations;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Server.Chemistry.ReagentEffects.PlantMetabolism
@@ -35,7 +34,5 @@ namespace Content.Server.Chemistry.ReagentEffects.PlantMetabolism
                 plantHolderComp.Seed.Endurance++;
             }
         }
-
-        protected override string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys) => Loc.GetString("reagent-effect-guidebook-missing", ("chance", Probability));
     }
 }

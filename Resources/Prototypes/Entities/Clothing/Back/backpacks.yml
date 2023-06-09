@@ -247,9 +247,9 @@
 - type: entity
   parent: ClothingBackpackClown
   id: ClothingBackpackCluwne
-  name: jiggles von jonkerton
+  name: cursed giggles von honkerton
   suffix: Unremoveable
-  description: It's a backpack made by Jonk! Co.
+  description: Cursed giggles von honkerton backpack.
   components:
   - type: Sprite
     sprite: Clothing/Back/Backpacks/cluwne.rsi

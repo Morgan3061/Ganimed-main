@@ -30,7 +30,9 @@ public sealed class SharedPreventCollideSystem : EntitySystem
 
     private void OnPreventCollide(EntityUid uid, PreventCollideComponent component, ref PreventCollideEvent args)
     {
-        if (component.Uid == args.OtherEntity)
+        var otherUid = args.BodyB.Owner;
+
+        if (component.Uid == otherUid)
             args.Cancelled = true;
     }
 

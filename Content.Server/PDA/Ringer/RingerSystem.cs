@@ -1,5 +1,6 @@
 using Content.Server.Store.Components;
 using Content.Server.Store.Systems;
+using Content.Server.UserInterface;
 using Content.Shared.PDA;
 using Content.Shared.PDA.Ringer;
 using Content.Shared.Store;
@@ -17,8 +18,8 @@ namespace Content.Server.PDA.Ringer
     {
         [Dependency] private readonly PDASystem _pda = default!;
         [Dependency] private readonly IRobustRandom _random = default!;
+        [Dependency] private readonly StoreSystem _store = default!;
         [Dependency] private readonly UserInterfaceSystem _ui = default!;
-        [Dependency] private readonly AudioSystem _audio = default!;
 
         public override void Initialize()
         {
@@ -33,27 +34,19 @@ namespace Content.Server.PDA.Ringer
             SubscribeLocalEvent<RingerComponent, RingerPlayRingtoneMessage>(RingerPlayRingtone);
             SubscribeLocalEvent<RingerComponent, RingerRequestUpdateInterfaceMessage>(UpdateRingerUserInterfaceDriver);
 
-            SubscribeLocalEvent<RingerUplinkComponent, CurrencyInsertAttemptEvent>(OnCurrencyInsert);
         }
 
         //Event Functions
 
-        private void OnCurrencyInsert(EntityUid uid, RingerUplinkComponent uplink, CurrencyInsertAttemptEvent args)
-        {
-            // if the store can be locked, it must be unlocked first before inserting currency. Stops traitor checking.
-            if (!uplink.Unlocked)
-                args.Cancel();
-        }
-
         private void RingerPlayRingtone(EntityUid uid, RingerComponent ringer, RingerPlayRingtoneMessage args)
         {
             EnsureComp<ActiveRingerComponent>(uid);
-            UpdateRingerUserInterface(uid, ringer);
+            UpdateRingerUserInterface(ringer);
         }
 
         private void UpdateRingerUserInterfaceDriver(EntityUid uid, RingerComponent ringer, RingerRequestUpdateInterfaceMessage args)
         {
-            UpdateRingerUserInterface(uid, ringer);
+            UpdateRingerUserInterface(ringer);
         }
 
         private void OnSetRingtone(EntityUid uid, RingerComponent ringer, RingerSetRingtoneMessage args)
@@ -66,12 +59,12 @@ namespace Content.Server.PDA.Ringer
             if (ev.Handled)
                 return;
 
-            UpdateRingerRingtone(uid, ringer, args.Ringtone);
+            UpdateRingerRingtone(ringer, args.Ringtone);
         }
 
         private void OnSetUplinkRingtone(EntityUid uid, RingerUplinkComponent uplink, ref BeforeRingtoneSetEvent args)
         {
-            if (uplink.Code.SequenceEqual(args.Ringtone) && HasComp<StoreComponent>(uid))
+            if (uplink.Code.SequenceEqual(args.Ringtone) && TryComp<StoreComponent>(uid, out var store))
             {
                 uplink.Unlocked = !uplink.Unlocked;
                 if (TryComp<PDAComponent>(uid, out var pda))
@@ -103,7 +96,7 @@ namespace Content.Server.PDA.Ringer
 
         public void RandomizeRingtone(EntityUid uid, RingerComponent ringer, MapInitEvent args)
         {
-            UpdateRingerRingtone(uid, ringer, GenerateRingtone());
+            UpdateRingerRingtone(ringer, GenerateRingtone());
         }
 
         public void RandomizeUplinkCode(EntityUid uid, RingerUplinkComponent uplink, ComponentInit args)
@@ -135,25 +128,25 @@ namespace Content.Server.PDA.Ringer
             return ringtone;
         }
 
-        private bool UpdateRingerRingtone(EntityUid uid, RingerComponent ringer, Note[] ringtone)
+        private bool UpdateRingerRingtone(RingerComponent ringer, Note[] ringtone)
         {
             // Assume validation has already happened.
             ringer.Ringtone = ringtone;
-            UpdateRingerUserInterface(uid, ringer);
+            UpdateRingerUserInterface(ringer);
 
             return true;
         }
 
-        private void UpdateRingerUserInterface(EntityUid uid, RingerComponent ringer)
+        private void UpdateRingerUserInterface(RingerComponent ringer)
         {
-            if (_ui.TryGetUi(uid, RingerUiKey.Key, out var bui))
-                _ui.SetUiState(bui, new RingerUpdateState(HasComp<ActiveRingerComponent>(uid), ringer.Ringtone));
+            var ui = ringer.Owner.GetUIOrNull(RingerUiKey.Key);
+            ui?.SetState(new RingerUpdateState(HasComp<ActiveRingerComponent>(ringer.Owner), ringer.Ringtone));
         }
 
-        public bool ToggleRingerUI(EntityUid uid, IPlayerSession session)
+        public bool ToggleRingerUI(RingerComponent ringer, IPlayerSession session)
         {
-            if (_ui.TryGetUi(uid, RingerUiKey.Key, out var bui))
-                _ui.ToggleUi(bui, session);
+            var ui = ringer.Owner.GetUIOrNull(RingerUiKey.Key);
+            ui?.Toggle(session);
             return true;
         }
 
@@ -161,31 +154,25 @@ namespace Content.Server.PDA.Ringer
         {
             var remove = new RemQueue<EntityUid>();
 
-            var pdaQuery = EntityQueryEnumerator<RingerComponent, ActiveRingerComponent>();
-            while (pdaQuery.MoveNext(out var uid, out var ringer, out var _))
+            foreach(var (_, ringer) in EntityManager.EntityQuery<ActiveRingerComponent, RingerComponent>())
             {
                 ringer.TimeElapsed += frameTime;
 
-                if (ringer.TimeElapsed < NoteDelay)
-                    continue;
+                if (ringer.TimeElapsed < NoteDelay) continue;
 
                 ringer.TimeElapsed -= NoteDelay;
-                var ringerXform = Transform(uid);
+                var ringerXform = Transform(ringer.Owner);
 
-                _audio.Play(
-                    GetSound(ringer.Ringtone[ringer.NoteCount]),
+                SoundSystem.Play(GetSound(ringer.Ringtone[ringer.NoteCount]),
                     Filter.Empty().AddInRange(ringerXform.MapPosition, ringer.Range),
-                    uid,
-                    true,
-                    AudioParams.Default.WithMaxDistance(ringer.Range).WithVolume(ringer.Volume)
-                );
+                    ringer.Owner, AudioParams.Default.WithMaxDistance(ringer.Range).WithVolume(ringer.Volume));
 
                 ringer.NoteCount++;
 
                 if (ringer.NoteCount > 3)
                 {
-                    remove.Add(uid);
-                    UpdateRingerUserInterface(uid, ringer);
+                    remove.Add(ringer.Owner);
+                    UpdateRingerUserInterface(ringer);
                     ringer.TimeElapsed = 0;
                     ringer.NoteCount = 0;
                     break;
@@ -198,12 +185,12 @@ namespace Content.Server.PDA.Ringer
             }
         }
 
-        private static string GetSound(Note note)
+        private string GetSound(Note note)
         {
             return new ResPath("/Audio/Effects/RingtoneNotes/" + note.ToString().ToLower()) + ".ogg";
         }
     }
-
-    [ByRefEvent]
-    public record struct BeforeRingtoneSetEvent(Note[] Ringtone, bool Handled = false);
 }
+
+[ByRefEvent]
+public record struct BeforeRingtoneSetEvent(Note[] Ringtone, bool Handled = false);

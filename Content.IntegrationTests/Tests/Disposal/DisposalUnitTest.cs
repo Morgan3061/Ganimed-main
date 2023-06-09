@@ -156,8 +156,6 @@ namespace Content.IntegrationTests.Tests.Disposal
             EntityUid wrench = default!;
             EntityUid disposalUnit = default!;
             EntityUid disposalTrunk = default!;
-
-            EntityUid unitUid = default;
             DisposalUnitComponent unitComponent = default!;
 
             var entityManager = server.ResolveDependency<IEntityManager>();
@@ -170,22 +168,22 @@ namespace Content.IntegrationTests.Tests.Disposal
                 wrench = entityManager.SpawnEntity("WrenchDummy", coordinates);
                 disposalUnit = entityManager.SpawnEntity("DisposalUnitDummy", coordinates);
                 disposalTrunk = entityManager.SpawnEntity("DisposalTrunkDummy",
-                    entityManager.GetComponent<TransformComponent>(disposalUnit).MapPosition);
+                    IoCManager.Resolve<IEntityManager>().GetComponent<TransformComponent>(disposalUnit).MapPosition);
 
                 // Test for components existing
-                unitUid = disposalUnit;
-                Assert.True(entityManager.TryGetComponent(disposalUnit, out unitComponent));
+                ref DisposalUnitComponent? comp = ref unitComponent!;
+                Assert.True(entityManager.TryGetComponent(disposalUnit, out comp));
                 Assert.True(entityManager.HasComponent<DisposalEntryComponent>(disposalTrunk));
 
                 // Can't insert, unanchored and unpowered
-                entityManager.GetComponent<TransformComponent>(unitUid).Anchored = false;
+                entityManager.GetComponent<TransformComponent>(unitComponent!.Owner).Anchored = false;
                 UnitInsertContains(unitComponent, false, human, wrench, disposalUnit, disposalTrunk);
             });
 
             await server.WaitAssertion(() =>
             {
                 // Anchor the disposal unit
-                entityManager.GetComponent<TransformComponent>(unitUid).Anchored = true;
+                entityManager.GetComponent<TransformComponent>(unitComponent.Owner).Anchored = true;
 
                 // No power
                 Assert.False(unitComponent.Powered);

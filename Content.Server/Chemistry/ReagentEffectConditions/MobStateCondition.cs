@@ -1,7 +1,6 @@
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
-using Robust.Shared.Prototypes;
 
 namespace Content.Server.Chemistry.ReagentEffectConditions
 {
@@ -21,11 +20,6 @@ namespace Content.Server.Chemistry.ReagentEffectConditions
             }
 
             return false;
-        }
-
-        public override string GuidebookExplanation(IPrototypeManager prototype)
-        {
-            return Loc.GetString("reagent-effect-condition-guidebook-mob-state-condition", ("state", mobstate));
         }
     }
 }

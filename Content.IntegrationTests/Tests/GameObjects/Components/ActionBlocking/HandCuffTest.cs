@@ -49,15 +49,13 @@ namespace Content.IntegrationTests.Tests.GameObjects.Components.ActionBlocking
             CuffableComponent cuffed;
             HandsComponent hands;
 
-            var entityManager = server.ResolveDependency<IEntityManager>();
-            var mapManager = server.ResolveDependency<IMapManager>();
-            var host = server.ResolveDependency<IServerConsoleHost>();
-
             await server.WaitAssertion(() =>
             {
+                var mapManager = IoCManager.Resolve<IMapManager>();
                 var mapId = mapManager.CreateMap();
                 var coordinates = new MapCoordinates(Vector2.Zero, mapId);
 
+                var entityManager = IoCManager.Resolve<IEntityManager>();
                 var cuffableSys = entityManager.System<CuffableSystem>();
 
                 // Spawn the entities
@@ -83,8 +81,8 @@ namespace Content.IntegrationTests.Tests.GameObjects.Components.ActionBlocking
                     "Handcuffing a player did not result in their hands being cuffed");
 
                 // Test to ensure a player with 4 hands will still only have 2 hands cuffed
-                AddHand(human, host);
-                AddHand(human, host);
+                AddHand(human);
+                AddHand(human);
 
                 Assert.That(cuffed.CuffedHandCount, Is.EqualTo(2));
                 Assert.That(hands.SortedHands.Count, Is.EqualTo(4));
@@ -97,8 +95,9 @@ namespace Content.IntegrationTests.Tests.GameObjects.Components.ActionBlocking
             await pairTracker.CleanReturnAsync();
         }
 
-        private void AddHand(EntityUid to, IServerConsoleHost host)
+        private void AddHand(EntityUid to)
         {
+            var host = IoCManager.Resolve<IServerConsoleHost>();
             host.ExecuteCommand(null, $"addhand {to}");
         }
     }

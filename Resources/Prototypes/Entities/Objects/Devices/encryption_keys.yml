@@ -214,3 +214,19 @@
     layers:
     - state: crypt_red
     - state: synd_label
+
+- type: entity
+  parent: EncryptionKey
+  id: EncryptionKeyNukelike
+  name: nukelike encryption key
+  description: A small cypher chip for headsets.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Syndicate
+    - Nukeops
+    defaultChannel: Nukeops
+  - type: Sprite
+    layers:
+    - state: crypt_red
+    - state: synd_label

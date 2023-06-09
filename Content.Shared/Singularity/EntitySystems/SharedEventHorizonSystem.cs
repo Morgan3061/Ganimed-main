@@ -181,7 +181,7 @@ public abstract class SharedEventHorizonSystem : EntitySystem
     /// <returns>A bool indicating whether the collision prevention has been handled.</returns>
     protected virtual bool PreventCollide(EntityUid uid, EventHorizonComponent comp, ref PreventCollideEvent args)
     {
-        var otherUid = args.OtherEntity;
+        var otherUid = args.BodyB.Owner;
 
         // For prediction reasons always want the client to ignore these.
         if (HasComp<MapGridComponent>(otherUid) ||

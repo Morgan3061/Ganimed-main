@@ -10,7 +10,6 @@ using Content.Server.NPC.Components;
 using Content.Server.NPC.Systems;
 using Content.Server.Nuke;
 using Content.Server.Preferences.Managers;
-using Content.Server.Roles;
 using Content.Server.RoundEnd;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
@@ -18,6 +17,8 @@ using Content.Server.Spawners.Components;
 using Content.Server.Station.Components;
 using Content.Server.Station.Systems;
 using Content.Server.Traitor;
+using Content.Server.Traits.Assorted;
+using Content.Shared.CombatMode.Pacification;
 using Content.Shared.Dataset;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
@@ -88,6 +89,10 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             var name = MetaData(uid).EntityName;
             if (session != null)
                 nukeops.OperativePlayers.Add(name, session);
+            // Corvax-DionaPacifist-Start: Allow dionas nukes to harm
+            RemComp<PacifistComponent>(uid);
+            RemComp<PacifiedComponent>(uid);
+            // Corvax-DionaPacifist-End
         }
     }
 
@@ -195,6 +200,8 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             _chatManager.DispatchServerMessage(actor.PlayerSession, Loc.GetString("nukeops-welcome", ("station", component.TargetStation.Value)));
             filter.AddPlayer(actor.PlayerSession);
         }
+
+        _audioSystem.PlayGlobal(component.GreetSound, filter, recordReplay: false);
     }
 
     private void OnRoundEnd(EntityUid uid, NukeopsRuleComponent? component = null)
@@ -582,7 +589,7 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             {
                 role ??= nukeops.OperativeRoleProto;
 
-                mind.AddRole(new NukeopsRole(mind, _prototypeManager.Index<AntagPrototype>(role)));
+                mind.AddRole(new TraitorRole(mind, _prototypeManager.Index<AntagPrototype>(role)));
                 nukeops.OperativeMindPendingData.Remove(uid);
             }
 
@@ -598,13 +605,10 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             if (GameTicker.RunLevel != GameRunLevel.InRound)
                 return;
 
-            if (nukeops.TargetStation != null && !string.IsNullOrEmpty(Name(nukeops.TargetStation.Value)))
-            {
-                _chatManager.DispatchServerMessage(playerSession, Loc.GetString("nukeops-welcome", ("station", nukeops.TargetStation.Value)));
+            _audioSystem.PlayGlobal(nukeops.GreetSound, playerSession);
 
-                 // Notificate player about new role assignment
-                 _audioSystem.PlayGlobal(component.GreetSoundNotification, playerSession);
-            }
+            if (nukeops.TargetStation != null && !string.IsNullOrEmpty(Name(nukeops.TargetStation.Value)))
+                _chatManager.DispatchServerMessage(playerSession, Loc.GetString("nukeops-welcome", ("station", nukeops.TargetStation.Value)));
         }
     }
 
@@ -762,7 +766,7 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
                     CharacterName = spawnDetails.Name
                 };
                 newMind.ChangeOwningPlayer(session.UserId);
-                newMind.AddRole(new NukeopsRole(newMind, nukeOpsAntag));
+                newMind.AddRole(new TraitorRole(newMind, nukeOpsAntag));
 
                 newMind.TransferTo(mob);
             }
@@ -810,7 +814,7 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             return;
 
         //ok hardcoded value bad but so is everything else here
-        mind.AddRole(new NukeopsRole(mind, _prototypeManager.Index<AntagPrototype>("Nukeops")));
+        mind.AddRole(new TraitorRole(mind, _prototypeManager.Index<AntagPrototype>("Nukeops")));
         SetOutfitCommand.SetOutfit(mind.OwnedEntity.Value, "SyndicateOperativeGearFull", EntityManager);
     }
 
@@ -825,7 +829,7 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             var minPlayers = nukeops.MinPlayers;
             if (!ev.Forced && ev.Players.Length < minPlayers)
             {
-                _chatManager.SendAdminAnnouncement(Loc.GetString("nukeops-not-enough-ready-players",
+                _chatManager.DispatchServerAnnouncement(Loc.GetString("nukeops-not-enough-ready-players",
                     ("readyPlayersCount", ev.Players.Length), ("minimumPlayers", minPlayers)));
                 ev.Cancel();
                 continue;

@@ -15,7 +15,7 @@ public sealed partial class AnalysisConsoleMenu : FancyWindow
     public event Action? OnServerSelectionButtonPressed;
     public event Action? OnScanButtonPressed;
     public event Action? OnPrintButtonPressed;
-    public event Action? OnExtractButtonPressed;
+    public event Action? OnDestroyButtonPressed;
 
     public AnalysisConsoleMenu()
     {
@@ -25,7 +25,7 @@ public sealed partial class AnalysisConsoleMenu : FancyWindow
         ServerSelectionButton.OnPressed += _ => OnServerSelectionButtonPressed?.Invoke();
         ScanButton.OnPressed += _ => OnScanButtonPressed?.Invoke();
         PrintButton.OnPressed += _ => OnPrintButtonPressed?.Invoke();
-        ExtractButton.OnPressed += _ => OnExtractButtonPressed?.Invoke();
+        DestroyButton.OnPressed += _ => OnDestroyButtonPressed?.Invoke();
     }
 
     public void SetButtonsDisabled(AnalysisConsoleScanUpdateState state)
@@ -35,15 +35,15 @@ public sealed partial class AnalysisConsoleMenu : FancyWindow
 
         var disabled = !state.ServerConnected || !state.CanScan || state.PointAmount <= 0;
 
-        ExtractButton.Disabled = disabled;
+        DestroyButton.Disabled = disabled;
 
         if (disabled)
         {
-            ExtractButton.RemoveStyleClass("ButtonColorGreen");
+            DestroyButton.RemoveStyleClass(StyleBase.ButtonCaution);
         }
         else
         {
-            ExtractButton.AddStyleClass("ButtonColorGreen");
+            DestroyButton.AddStyleClass(StyleBase.ButtonCaution);
         }
     }
 

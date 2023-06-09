@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Mech.Components;
 using Content.Server.Power.Components;
@@ -11,7 +11,6 @@ using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.EntitySystems;
 using Content.Shared.Movement.Events;
-using Content.Shared.Popups;
 using Content.Shared.Tools.Components;
 using Content.Shared.Verbs;
 using Content.Shared.Wires;
@@ -32,7 +31,6 @@ public sealed class MechSystem : SharedMechSystem
     [Dependency] private readonly IMapManager _map = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
 
     private ISawmill _sawmill = default!;
 
@@ -219,12 +217,6 @@ public sealed class MechSystem : SharedMechSystem
     {
         if (args.Cancelled || args.Handled)
             return;
-
-        if (component.PilotWhitelist != null && !component.PilotWhitelist.IsValid(args.User))
-        {
-            _popup.PopupEntity(Loc.GetString("mech-no-enter", ("item", uid)), args.User);
-            return;
-        }
 
         TryInsert(uid, args.Args.User, component);
         _actionBlocker.UpdateCanMove(uid);

@@ -35,13 +35,14 @@ namespace Content.IntegrationTests.Tests.Body
             var server = pairTracker.Pair.Server;
 
             AppearanceComponent appearance = null;
-            var entityManager = server.ResolveDependency<IEntityManager>();
-            var mapManager = server.ResolveDependency<IMapManager>();
 
             await server.WaitAssertion(() =>
             {
+                var mapManager = IoCManager.Resolve<IMapManager>();
+
                 var mapId = mapManager.CreateMap();
 
+                var entityManager = IoCManager.Resolve<IEntityManager>();
                 var human = entityManager.SpawnEntity("HumanBodyAndAppearanceDummy",
                     new MapCoordinates(Vector2.Zero, mapId));
 
@@ -51,7 +52,7 @@ namespace Content.IntegrationTests.Tests.Body
                 Assert.That(!appearance.TryGetData(RotationVisuals.RotationState, out RotationState _));
 
                 var bodySystem = entityManager.System<BodySystem>();
-                var legs = bodySystem.GetBodyChildrenOfType(human, BodyPartType.Leg, body);
+                var legs = bodySystem.GetBodyChildrenOfType(body.Owner, BodyPartType.Leg, body);
 
                 foreach (var leg in legs)
                 {

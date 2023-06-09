@@ -1,13 +1,29 @@
 - type: currency
   id: Telecrystal
   displayName: store-currency-display-telecrystal
-  cash: 
+  cash:
     1: Telecrystal1
   canWithdraw: true
 
 - type: currency
   id: StolenEssence
   displayName: store-currency-display-stolen-essence
+  canWithdraw: false
+  
+  #changeling
+- type: currency
+  id: Chemicals
+  displayName: store-currency-display-chemicals
+  canWithdraw: false
+
+- type: currency
+  id: Points
+  displayName: store-currency-display-points
+  canWithdraw: false
+
+- type: currency
+  id: StolenMutationPoint
+  displayName: store-currency-display-stolen-mutation-points
   canWithdraw: false
 
 #debug

@@ -221,13 +221,8 @@ public abstract partial class SharedGunSystem : EntitySystem
 
         var curTime = Timing.CurTime;
 
-        // check if anything wants to prevent shooting
-        var prevention = new ShotAttemptedEvent
-        {
-            User = user
-        };
-        RaiseLocalEvent(gunUid, ref prevention);
-        if (prevention.Cancelled)
+        // Maybe Raise an event for this? CanAttack doesn't seem appropriate.
+        if (TryComp<MeleeWeaponComponent>(gunUid, out var melee) && melee.NextAttack > curTime)
             return;
 
         // Need to do this to play the clicking sound for empty automatic weapons

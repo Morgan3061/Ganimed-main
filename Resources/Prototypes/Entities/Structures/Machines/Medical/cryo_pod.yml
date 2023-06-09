@@ -105,6 +105,3 @@
   - type: CryoPodAir
   - type: ContainerTemperatureDamageThresholds
     coldDamageThreshold: 10
-  - type: GuideHelp
-    guides:
-    - Cryogenics

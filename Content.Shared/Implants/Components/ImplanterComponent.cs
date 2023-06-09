@@ -67,7 +67,7 @@ public sealed class ImplanterComponent : Component
     /// The <see cref="ItemSlot"/> for this implanter
     /// </summary>
     [ViewVariables]
-    [DataField("implanterSlot", required:true)]
+    [DataField("implanterSlot")]
     public ItemSlot ImplanterSlot = new();
 
     public bool UiUpdateNeeded;

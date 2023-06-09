@@ -48,10 +48,10 @@ public sealed class DoAfter
     public EntityCoordinates UserPosition;
 
     /// <summary>
-    ///     Distance from the user to the target when the do after was started.
+    ///     Position of the target relative to their parent when the do after was started.
     /// </summary>
-    [DataField("targetDistance")]
-    public float TargetDistance;
+    [DataField("targetPosition")]
+    public EntityCoordinates TargetPosition;
 
     /// <summary>
     ///     If <see cref="DoAfterArgs.NeedHand"/> is true, this is the hand that was selected when the doafter started.
@@ -94,7 +94,7 @@ public sealed class DoAfter
         CancelledTime = other.CancelledTime;
         Completed = other.Completed;
         UserPosition = other.UserPosition;
-        TargetDistance = other.TargetDistance;
+        TargetPosition = other.TargetPosition;
         InitialHand = other.InitialHand;
         InitialItem = other.InitialItem;
     }

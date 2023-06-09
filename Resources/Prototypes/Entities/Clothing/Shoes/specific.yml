@@ -162,24 +162,24 @@
     sprite: Clothing/Shoes/Specific/cluwne.rsi
   - type: Unremoveable
 
+
+
 - type: entity
-  parent: ClothingShoesClown
-  id: ClothingShoesClownLarge
-  name: large clown shoes
-  description: "When you need to stand out in a room full of clowns!"
+  parent: ClothingShoesBase
+  id: ClothingFleshSpiderLegs
+  name: Flesh Spider Legs
+  description: "Flesh Spider Legs."
   components:
-  - type: Sprite
-    state: "icon"
-    sprite: Clothing/Shoes/Specific/large_clown.rsi
-  - type: Clothing
-    sprite: Clothing/Shoes/Specific/large_clown.rsi
-    clothingVisuals:
-      shoes:
-      - state: equipped-FEET
-        offset: "0, -0.02"
-  - type: Item
-    size: 10
-    sprite: Clothing/Shoes/Specific/large_clown.rsi
-  - type: ClothingSpeedModifier
-    walkModifier: 0.85
-    sprintModifier: 0.8
+    - type: ClothingSpeedModifier
+      walkModifier: 1.2
+      sprintModifier: 1.3
+    - type: Sprite
+      sprite: Clothing/Shoes/Specific/flesh_spider.rsi
+    - type: Clothing
+      sprite: Clothing/Shoes/Specific/flesh_spider.rsi
+    - type: Unremoveable
+      deleteOnDrop: true
+    - type: NoSlip
+    - type: Tag
+      tags:
+        - HidesLegs

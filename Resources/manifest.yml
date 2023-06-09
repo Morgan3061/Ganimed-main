@@ -1,10 +1,5 @@
-﻿defaultWindowTitle: Space Station 14
-windowIconSet: /Textures/Logo/icon
-splashLogo: /Textures/Logo/logo.png
-
-clientAssemblies:
-  - Content.Client
-  - Content.Shared
-  - Content.Shared.Database
+defaultWindowTitle: Space Station 14 - Ganimed Station [RU]
+windowIconSet: /Textures/Logo/icon-ru # Corvax-Theme
+splashLogo: /Textures/Logo/logo-ru.png # Corvax-Theme
 
 # PJB PLEASE

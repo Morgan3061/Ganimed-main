@@ -366,7 +366,7 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
            if (comp == centcomm || comp.MapId != centcomm.MapId)
                continue;
 
-           comp.ShuttleIndex = centcomm.ShuttleIndex;
+           comp.ShuttleIndex = comp.ShuttleIndex;
        }
 
        component.EmergencyShuttle = shuttle;

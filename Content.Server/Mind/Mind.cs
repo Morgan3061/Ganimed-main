@@ -259,7 +259,9 @@ namespace Content.Server.Mind
 
         public bool HasRole<T>() where T : Role
         {
-            return _roles.Any(role => role is T);
+            var t = typeof(T);
+
+            return _roles.Any(role => role.GetType() == t);
         }
 
         /// <summary>

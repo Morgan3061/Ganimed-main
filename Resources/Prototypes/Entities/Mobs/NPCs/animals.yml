@@ -426,9 +426,6 @@
     prototype: AnimalRuminant
   - type: HTN
     rootTask: RuminantCompound
-  - type: GuideHelp
-    guides:
-    - Chef
 
 - type: entity
   name: crab
@@ -903,8 +900,10 @@
     solutions:
       food:
         reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Blood
+          Quantity: 50
   - type: Butcherable
     spawned:
     - id: FoodMeatRat
@@ -2112,9 +2111,7 @@
         - ReagentId: Nutriment
           Quantity: 10
         - ReagentId: Blood
-          Quantity: 55
-        - ReagentId: Fat
-          Quantity: 5
+          Quantity: 60
   - type: Butcherable
     spawned:
     - id: FoodMeat
@@ -2125,7 +2122,6 @@
     tags:
     - Trash
     - CannotSuicide
-    - Hamster
   - type: Respirator
     damage:
       types:

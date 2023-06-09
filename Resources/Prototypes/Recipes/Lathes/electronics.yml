@@ -36,7 +36,7 @@
   completetime: 2
   materials:
      Steel: 50
-     Plastic: 300
+     Plastic: 50
 
 - type: latheRecipe
   id: AirAlarmElectronics
@@ -377,24 +377,6 @@
     Steel: 100
     Glass: 900
     Bananium: 100
-
-- type: latheRecipe
-  id: HamtrCentralElectronics
-  result: HamtrCentralElectronics
-  completetime: 4
-  materials:
-    Steel: 100
-    Glass: 900
-    Gold: 100
-
-- type: latheRecipe
-  id: HamtrPeripheralsElectronics
-  result: HamtrPeripheralsElectronics
-  completetime: 4
-  materials:
-    Steel: 100
-    Glass: 900
-    Gold: 100
 
 # Power
 - type: latheRecipe

@@ -31,20 +31,17 @@ public sealed class EntityAnomalySystem : EntitySystem
         var amount = (int) (component.MaxSpawnAmount * args.Severity + 0.5f);
 
         var xform = Transform(uid);
-        SpawnMonstersOnOpenTiles(component, xform, amount, range, component.Spawns);
+        SpawnMonstersOnOpenTiles(component, xform, amount, range);
     }
 
     private void OnSupercritical(EntityUid uid, EntitySpawnAnomalyComponent component, ref AnomalySupercriticalEvent args)
     {
         var xform = Transform(uid);
-        // A cluster of monsters
-        SpawnMonstersOnOpenTiles(component, xform, component.MaxSpawnAmount, component.SpawnRange, component.Spawns);
-        // And so much meat (for the meat anomaly at least)
+        SpawnMonstersOnOpenTiles(component, xform, component.MaxSpawnAmount, component.SpawnRange);
         Spawn(component.SupercriticalSpawn, xform.Coordinates);
-        SpawnMonstersOnOpenTiles(component, xform, component.MaxSpawnAmount, component.SpawnRange, new List<string>(){component.SupercriticalSpawn});
     }
 
-    private void SpawnMonstersOnOpenTiles(EntitySpawnAnomalyComponent component, TransformComponent xform, int amount, float radius, List<string> spawns)
+    private void SpawnMonstersOnOpenTiles(EntitySpawnAnomalyComponent component, TransformComponent xform, int amount, float radius)
     {
         if (!component.Spawns.Any())
             return;
@@ -79,7 +76,7 @@ public sealed class EntityAnomalySystem : EntitySystem
             if (!valid)
                 continue;
             amountCounter++;
-            Spawn(_random.Pick(spawns), tileref.GridIndices.ToEntityCoordinates(xform.GridUid.Value, _map));
+            Spawn(_random.Pick(component.Spawns), tileref.GridIndices.ToEntityCoordinates(xform.GridUid.Value, _map));
             if (amountCounter >= amount)
                 return;
         }

@@ -123,32 +123,6 @@
   - type: ConditionalSpawner
     prototypes:
       - MobCatFloppa
-      
-- type: entity
-  name: Bingus Spawner
-  id: SpawnMobCatBingus
-  parent: MarkerBase
-  components:
-  - type: Sprite
-    layers:
-      - state: green
-      - state: ai
-  - type: ConditionalSpawner
-    prototypes:
-      - MobBingus
-
-- type: entity
-  name: Space Cat Spawner
-  id: SpawnMobCatSpace
-  parent: MarkerBase
-  components:
-  - type: Sprite
-    layers:
-      - state: green
-      - state: ai
-  - type: ConditionalSpawner
-    prototypes:
-      - MobCatSpace
 
 - type: entity
   name: Cat Spawner
@@ -164,7 +138,6 @@
       - MobCatRuntime
       - MobCatException
       - MobCatFloppa
-      - MobBingus
 
 - type: entity
   name: Generic Cat Spawner
@@ -175,14 +148,11 @@
     layers:
       - state: green
       - state: ai
-  - type: RandomSpawner
+  - type: ConditionalSpawner
     prototypes:
       - MobCat
       - MobCatCalico
       - MobCatCaracal
-    rarePrototypes:
-      - MobCatSpace
-    rareChance: 0.05
 
 - type: entity
   name: Bandito Spawner

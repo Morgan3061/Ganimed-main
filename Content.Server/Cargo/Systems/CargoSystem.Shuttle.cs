@@ -1,7 +1,9 @@
 using System.Linq;
 using Content.Server.Cargo.Components;
+using Content.Server.Shuttle.Components;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
+using Content.Server.UserInterface;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Stack;
 using Content.Shared.Stacks;
@@ -9,9 +11,12 @@ using Content.Shared.Cargo;
 using Content.Shared.Cargo.BUI;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Cargo.Events;
+using Content.Shared.Cargo.Prototypes;
 using Content.Shared.CCVar;
+using Content.Shared.Dataset;
 using Content.Shared.GameTicking;
 using Content.Shared.Whitelist;
+using Robust.Server.GameObjects;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
@@ -30,7 +35,6 @@ public sealed partial class CargoSystem
      */
 
     [Dependency] private readonly IComponentFactory _factory = default!;
-    [Dependency] private readonly IConfigurationManager _cfgManager = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
@@ -53,20 +57,6 @@ public sealed partial class CargoSystem
         SubscribeLocalEvent<CargoPalletConsoleComponent, BoundUIOpenedEvent>(OnPalletUIOpen);
 
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
-        _cfgManager.OnValueChanged(CCVars.GridFill, SetGridFill);
-    }
-
-    private void ShutdownShuttle()
-    {
-        _cfgManager.UnsubValueChanged(CCVars.GridFill, SetGridFill);
-    }
-
-    private void SetGridFill(bool obj)
-    {
-        if (obj)
-        {
-            SetupCargoShuttle();
-        }
     }
 
     private void OnCargoFTLTag(EntityUid uid, CargoShuttleComponent component, ref FTLTagEvent args)
@@ -378,9 +368,7 @@ public sealed partial class CargoSystem
     private void OnRoundRestart(RoundRestartCleanupEvent ev)
     {
         CleanupCargoShuttle();
-
-        if (_cfgManager.GetCVar(CCVars.GridFill))
-            SetupCargoShuttle();
+        SetupCargoShuttle();
     }
 
     private void CleanupCargoShuttle()
@@ -400,11 +388,12 @@ public sealed partial class CargoSystem
 
         while (query.MoveNext(out var uid, out var comp))
         {
+            var stationUid = _station.GetOwningStation(uid);
+
             if (TryComp<StationCargoOrderDatabaseComponent>(uid, out var station))
             {
                 station.Shuttle = null;
             }
-
             QueueDel(uid);
         }
     }

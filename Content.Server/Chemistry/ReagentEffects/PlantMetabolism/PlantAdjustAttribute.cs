@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Content.Server.Botany.Components;
 using Content.Shared.Chemistry.Reagent;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Server.Chemistry.ReagentEffects.PlantMetabolism
@@ -36,7 +35,5 @@ namespace Content.Server.Chemistry.ReagentEffects.PlantMetabolism
             // Dependencies are never injected for reagents if you intend to do that for this.
             return !(Prob <= 0f) && IoCManager.Resolve<IRobustRandom>().Prob(Prob);
         }
-
-        protected override string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys) => Loc.GetString("reagent-effect-guidebook-missing", ("chance", Probability));
     }
 }

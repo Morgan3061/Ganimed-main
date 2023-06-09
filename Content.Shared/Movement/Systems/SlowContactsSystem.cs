@@ -1,4 +1,5 @@
 using Content.Shared.Movement.Components;
+using Robust.Shared.GameStates;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
@@ -19,6 +20,9 @@ public sealed class SlowContactsSystem : EntitySystem
         SubscribeLocalEvent<SlowContactsComponent, StartCollideEvent>(OnEntityEnter);
         SubscribeLocalEvent<SlowContactsComponent, EndCollideEvent>(OnEntityExit);
         SubscribeLocalEvent<SlowedByContactComponent, RefreshMovementSpeedModifiersEvent>(MovementSpeedCheck);
+
+        SubscribeLocalEvent<SlowContactsComponent, ComponentHandleState>(OnHandleState);
+        SubscribeLocalEvent<SlowContactsComponent, ComponentGetState>(OnGetState);
 
         UpdatesAfter.Add(typeof(SharedPhysicsSystem));
     }
@@ -42,20 +46,18 @@ public sealed class SlowContactsSystem : EntitySystem
         _toUpdate.Clear();
     }
 
-    public void ChangeModifiers(EntityUid uid, float speed, SlowContactsComponent? component = null)
+    private void OnGetState(EntityUid uid, SlowContactsComponent component, ref ComponentGetState args)
     {
-        ChangeModifiers(uid, speed, speed, component);
+        args.State = new SlowContactsComponentState(component.WalkSpeedModifier, component.SprintSpeedModifier);
     }
 
-    public void ChangeModifiers(EntityUid uid, float walkSpeed, float sprintSpeed, SlowContactsComponent? component = null)
+    private void OnHandleState(EntityUid uid, SlowContactsComponent component, ref ComponentHandleState args)
     {
-        if (!Resolve(uid, ref component))
-        {
+        if (args.Current is not SlowContactsComponentState state)
             return;
-        }
-        component.WalkSpeedModifier = walkSpeed;
-        component.SprintSpeedModifier = sprintSpeed;
-        Dirty(component);
+
+        component.WalkSpeedModifier = state.WalkSpeedModifier;
+        component.SprintSpeedModifier = state.SprintSpeedModifier;
     }
 
     private void MovementSpeedCheck(EntityUid uid, SlowedByContactComponent component, RefreshMovementSpeedModifiersEvent args)

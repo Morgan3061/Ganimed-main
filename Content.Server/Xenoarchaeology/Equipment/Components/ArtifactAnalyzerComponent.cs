@@ -8,7 +8,7 @@ namespace Content.Server.Xenoarchaeology.Equipment.Components;
 
 /// <summary>
 /// A machine that is combined and linked to the <see cref="AnalysisConsoleComponent"/>
-/// in order to analyze artifacts and extract points.
+/// in order to analyze and destroy artifacts.
 /// </summary>
 [RegisterComponent]
 public sealed class ArtifactAnalyzerComponent : Component

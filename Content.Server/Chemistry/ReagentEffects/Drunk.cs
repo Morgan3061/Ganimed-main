@@ -1,6 +1,5 @@
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Drunk;
-using Robust.Shared.Prototypes;
 
 namespace Content.Server.Chemistry.ReagentEffects;
 
@@ -17,9 +16,6 @@ public sealed class Drunk : ReagentEffect
     /// </summary>
     [DataField("slurSpeech")]
     public bool SlurSpeech = true;
-
-    protected override string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys)
-        => Loc.GetString("reagent-effect-guidebook-drunk", ("chance", Probability));
 
     public override void Effect(ReagentEffectArgs args)
     {

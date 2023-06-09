@@ -48,12 +48,10 @@ public sealed partial class ImplanterSystem : SharedImplanterSystem
         }
         else
         {
-            if (!CanImplant(args.User, args.Target.Value, uid, component, out _, out _))
-                return;
-
             //Implant self instantly, otherwise try to inject the target.
             if (args.User == args.Target)
-                Implant(args.User, args.Target.Value, uid, component);
+                Implant(uid, args.Target.Value, component);
+
             else
                 TryImplant(component, args.User, args.Target.Value, uid);
         }
@@ -119,7 +117,7 @@ public sealed partial class ImplanterSystem : SharedImplanterSystem
         if (args.Cancelled || args.Handled || args.Target == null || args.Used == null)
             return;
 
-        Implant(args.User, args.Target.Value, args.Used.Value, component);
+        Implant(args.Used.Value, args.Target.Value, component);
 
         args.Handled = true;
     }

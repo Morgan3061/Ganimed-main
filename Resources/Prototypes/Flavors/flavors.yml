@@ -775,11 +775,6 @@
   description: flavor-complex-electrons
 
 - type: flavor
-  id: bottledlightning
-  flavorType: Complex
-  description: flavor-complex-bottledlightning
-
-- type: flavor
   id: meatballs
   flavorType: Complex
   description: flavor-complex-meatballs
@@ -799,16 +794,6 @@
   flavorType: Complex
   description: flavor-complex-themartinez
 
-- type: flavor
-  id: plastic
-  flavorType: Complex
-  description: flavor-complex-plastic
-
-- type: flavor
-  id: glue
-  flavorType: Complex
-  description: flavor-complex-glue
-  
 - type: flavor
   id: rocksandstones
   flavorType: Complex

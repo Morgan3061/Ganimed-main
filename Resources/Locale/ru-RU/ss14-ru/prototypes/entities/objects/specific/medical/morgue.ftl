@@ -1,0 +1,9 @@
+ent-BodyBag_Container = мешок для тела
+    .desc = Пластиковый мешок, предназначенный для хранения и транспортировки трупов.
+ent-BodyBag_Folded = мешок для тела
+    .desc = Пластиковый мешок, предназначенный для хранения и транспортировки трупов.
+    .suffix = Сложенный
+ent-Ash = пепел
+    .desc = Раньше это чем-то было, но теперь это не так.
+ent-Ectoplasm = ectoplasm
+    .desc = Much less deadly in this form.

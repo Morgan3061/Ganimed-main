@@ -1,11 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.Station.Systems;
-using Content.Shared.Access.Components;
 using Content.Server.Forensics;
 using Content.Shared.Inventory;
-using Content.Shared.Nuke;
 using Content.Shared.PDA;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
@@ -128,7 +125,8 @@ public sealed class StationRecordsSystem : EntitySystem
             Gender = gender,
             DisplayPriority = jobPrototype.Weight,
             Fingerprint = mobFingerprint,
-            DNA = dna
+            DNA = dna,
+            Profile = profile
         };
 
         var key = AddRecord(station, records);

@@ -1,5 +1,4 @@
 using Content.Server.Mind.Components;
-using Content.Server.Roles;
 using Content.Server.Traitor;
 using Content.Shared.Roles;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
@@ -36,7 +35,7 @@ public sealed class BuyerAntagCondition : ListingCondition
         {
             foreach (var role in mind.Mind.AllRoles)
             {
-                if (role is not AntagonistRole blacklistantag)
+                if (role is not TraitorRole blacklistantag)
                     continue;
 
                 if (Blacklist.Contains(blacklistantag.Prototype.ID))
@@ -49,7 +48,7 @@ public sealed class BuyerAntagCondition : ListingCondition
             var found = false;
             foreach (var role in mind.Mind.AllRoles)
             {
-                if (role is not AntagonistRole antag)
+                if (role is not TraitorRole antag)
                     continue;
 
                 if (Whitelist.Contains(antag.Prototype.ID))

@@ -1,8 +1,8 @@
 - type: entity
   id: Defibrillator
   parent: [ BaseItem, PowerCellSlotMediumItem ]
-  name: defibrillator
-  description: CLEAR! Zzzzat!
+  name: Дефибрилятор
+  description: ЧИСТО! ЗЗзззат!
   components:
   - type: Sprite
     sprite: Objects/Specific/Medical/defib.rsi
@@ -41,9 +41,6 @@
   - type: UseDelay
   - type: StaticPrice
     price: 100
-  - type: GuideHelp
-    guides:
-    - Medical Doctor
 
 - type: entity
   id: DefibrillatorEmpty

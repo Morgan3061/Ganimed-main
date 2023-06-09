@@ -138,6 +138,42 @@
         probability: 0.33
 
 - type: reagent
+  id: FleshAcid
+  name: reagent-name-flesh-acid
+  group: Toxins
+  desc: reagent-desc-flesh-acid
+  physicalDesc: reagent-physical-desc-strong-smelling
+  flavor: acidic
+  color: "#c9000e"
+  boilingPoint: 78.2 # This isn't a real chemical...
+  meltingPoint: -19.4
+  reactiveEffects:
+    Acidic:
+      methods: [ Touch ]
+      effects:
+        - !type:HealthChange
+          scaleByQuantity: true
+          ignoreResistances: false
+          damage:
+            types:
+              Caustic: 3
+        - !type:Emote
+          emote: Scream
+          probability: 1
+  metabolisms:
+    Poison:
+      effects:
+        - !type:HealthChange
+          damage:
+            types:
+              Caustic: 5
+        - !type:PopupMessage
+          type: Local
+          visualType: Large
+          messages: [ "generic-reagent-effect-burning-insides" ]
+          probability: 0.33
+
+- type: reagent
   id: FluorosulfuricAcid
   name: reagent-name-fluorosulfuric-acid
   group: Toxins
@@ -370,7 +406,6 @@
 - type: reagent
   id: VentCrud
   name: reagent-name-vent-crud
-  group: Toxins
   desc: reagent-desc-vent-crud
   physicalDesc: reagent-physical-desc-sticky
   flavor: bitter
@@ -386,7 +421,6 @@
 - type: reagent
   id: Corpium
   name: reagent-name-corpium
-  group: Toxins
   desc: reagent-desc-corpium
   physicalDesc: reagent-physical-desc-necrotic
   flavor: bitter
@@ -402,7 +436,6 @@
 - type: reagent
   id: UncookedAnimalProteins
   name: reagent-name-uncooked-animal-proteins
-  group: Foods
   desc: reagent-desc-uncooked-animal-proteins
   physicalDesc: reagent-physical-desc-clumpy
   flavor: bitter
@@ -427,7 +460,6 @@
 - type: reagent
   id: Allicin
   name: reagent-name-allicin
-  group: Foods
   desc: reagent-desc-allicin
   physicalDesc: reagent-physical-desc-pungent
   flavor: bitter
@@ -449,7 +481,6 @@
 - type: reagent
   id: Pax
   name: reagent-name-pax
-  group: Narcotics
   desc: reagent-desc-pax
   physicalDesc: reagent-physical-desc-soothing
   color: "#AAAAAA"
@@ -465,7 +496,6 @@
 - type: reagent
   id: Honk
   name: reagent-name-honk
-  group: Toxins
   desc: reagent-desc-honk
   physicalDesc: reagent-physical-desc-pungent
   flavor: bitter

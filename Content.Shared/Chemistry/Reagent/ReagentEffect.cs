@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Database;
 using Content.Shared.FixedPoint;
-using Content.Shared.Localizations;
 using JetBrains.Annotations;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Shared.Chemistry.Reagent
@@ -26,10 +23,6 @@ namespace Content.Shared.Chemistry.Reagent
         [DataField("conditions")]
         public ReagentEffectCondition[]? Conditions;
 
-        public virtual string ReagentEffectFormat => "guidebook-reagent-effect-description";
-
-        protected abstract string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys); // => Loc.GetString("reagent-effect-guidebook-missing", ("chance", Probability));
-
         /// <summary>
         ///     What's the chance, from 0 to 1, that this effect will occur?
         /// </summary>
@@ -49,23 +42,6 @@ namespace Content.Shared.Chemistry.Reagent
         public virtual bool ShouldLog { get; } = false;
 
         public abstract void Effect(ReagentEffectArgs args);
-
-        /// <summary>
-        /// Produces a localized, bbcode'd guidebook description for this effect.
-        /// </summary>
-        /// <returns></returns>
-        public string? GuidebookEffectDescription(IPrototypeManager prototype, IEntitySystemManager entSys)
-        {
-            var effect = ReagentEffectGuidebookText(prototype, entSys);
-            if (effect is null)
-                return null;
-
-            return Loc.GetString(ReagentEffectFormat, ("effect", effect), ("chance", Probability),
-                ("conditionCount", Conditions?.Length ?? 0),
-                ("conditions",
-                    ContentLocalizationManager.FormatList(Conditions?.Select(x => x.GuidebookExplanation(prototype)).ToList() ??
-                                                          new List<string>())));
-        }
     }
 
     public static class ReagentEffectExt

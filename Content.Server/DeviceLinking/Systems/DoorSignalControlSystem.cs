@@ -43,7 +43,7 @@ namespace Content.Server.DeviceLinking.Systems
             {
                 if (state == SignalState.High || state == SignalState.Momentary)
                 {
-                    if (door.State == DoorState.Closed)
+                    if (door.State != DoorState.Closed)
                         _doorSystem.TryOpen(uid, door);
                 }
             }
@@ -51,7 +51,7 @@ namespace Content.Server.DeviceLinking.Systems
             {
                 if (state == SignalState.High || state == SignalState.Momentary)
                 {
-                    if (door.State == DoorState.Open)
+                    if (door.State != DoorState.Open)
                         _doorSystem.TryClose(uid, door);
                 }
             }
@@ -65,21 +65,21 @@ namespace Content.Server.DeviceLinking.Systems
             }
             else if (args.Port == component.InBolt)
             {
-                if (!TryComp<DoorBoltComponent>(uid, out var bolts))
-                    return;
-
-                // if its a pulse toggle, otherwise set bolts to high/low
-                bool bolt;
-                if (state == SignalState.Momentary)
+                if (state == SignalState.High)
                 {
-                    bolt = !bolts.BoltsDown;
+                    if(TryComp<DoorBoltComponent>(uid, out var bolts))
+                        _bolts.SetBoltsWithAudio(uid, bolts, true);
+                }
+                else if (state == SignalState.Momentary)
+                {
+                    if (TryComp<DoorBoltComponent>(uid, out var bolts))
+                        _bolts.SetBoltsWithAudio(uid, bolts, newBolts: !bolts.BoltsDown);
                 }
                 else
                 {
-                    bolt = state == SignalState.High;
+                    if(TryComp<DoorBoltComponent>(uid, out var bolts))
+                        _bolts.SetBoltsWithAudio(uid, bolts, false);
                 }
-
-                _bolts.SetBoltsWithAudio(uid, bolts, bolt);
             }
         }
 
@@ -96,9 +96,9 @@ namespace Content.Server.DeviceLinking.Systems
                 _signalSystem.InvokePort(uid, door.OutOpen, data);
             }
             else if (args.State == DoorState.Open
-                  || args.State == DoorState.Opening
-                  || args.State == DoorState.Closing
-                  || args.State == DoorState.Emagging)
+                     || args.State == DoorState.Opening
+                     || args.State == DoorState.Closing
+                     || args.State == DoorState.Emagging)
             {
                 data[DeviceNetworkConstants.LogicState] = SignalState.High;
                 _signalSystem.InvokePort(uid, door.OutOpen, data);

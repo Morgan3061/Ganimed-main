@@ -270,6 +270,9 @@
   id: Flesh
 
 - type: Tag
+  id: FleshBlocker
+
+- type: Tag
   id: WhitelistChameleon
 
 - type: Tag
@@ -300,6 +303,9 @@
   id: ForceNoFixRotations # fixrotations command WON'T target this
 
 - type: Tag
+  id: FullBodyOuter # this outerclothing wraps around the feet and legs
+
+- type: Tag
   id: GasScrubber
 
 - type: Tag
@@ -322,28 +328,6 @@
 
 - type: Tag
   id: GuideEmbeded
-
-
-- type: Tag
-  id: Hamster
-
-- type: Tag
-  id: HamtrCentralControlModule
-
-- type: Tag
-  id: HamtrPeripheralsControlModule
-
-- type: Tag
-  id: HamtrLArm
-
-- type: Tag
-  id: HamtrLLeg
-
-- type: Tag
-  id: HamtrRLeg
-
-- type: Tag
-  id: HamtrRArm
 
 - type: Tag
   id: Handcuffs
@@ -369,6 +353,9 @@
 
 - type: Tag
   id: HidesHair # for headwear.
+
+- type: Tag
+  id: HidesLegs # for spider legs.
 
 - type: Tag
   id: HighRiskItem
@@ -663,9 +650,6 @@
   id: SkeletonMotorcycleKeys
 
 - type: Tag
-  id: SmallMech
-
-- type: Tag
   id: Smokable
 
 - type: Tag
@@ -763,6 +747,9 @@
 
 - type: Tag
   id: Window
+
+- type: Tag
+  id: Directional
 
 - type: Tag
   id: WizardWand # that evil vvizard vvand

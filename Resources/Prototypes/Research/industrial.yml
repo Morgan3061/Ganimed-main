@@ -53,6 +53,7 @@
   - AutolatheMachineCircuitboard
   - CircuitImprinterMachineCircuitboard
   - MaterialReclaimerMachineCircuitboard
+  - PaperPrinterCircuitboard # Corvax feature
 
 - type: technology
   id: PowerGeneration
@@ -181,7 +182,7 @@
   tier: 2
   cost: 10000
   recipeUnlocks:
-    - WelderExperimental
+    - WelderIndustrialAdvanced
     - PowerDrill
     - JawsOfLife
 

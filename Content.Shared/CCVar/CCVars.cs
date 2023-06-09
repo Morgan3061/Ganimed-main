@@ -167,7 +167,7 @@ namespace Content.Shared.CCVar
         ///     The preset for the game to fall back to if the selected preset could not be used, and fallback is enabled.
         /// </summary>
         public static readonly CVarDef<string>
-            GameLobbyFallbackPreset = CVarDef.Create("game.fallbackpreset", "Traitor,Extended", CVar.ARCHIVE);
+            GameLobbyFallbackPreset = CVarDef.Create("game.fallbackpreset", "extended", CVar.ARCHIVE);
 
         /// <summary>
         ///     Controls if people can win the game in Suspicion or Deathmatch.
@@ -241,7 +241,7 @@ namespace Content.Shared.CCVar
             CVarDef.Create("game.diagonalmovement", true, CVar.ARCHIVE);
 
         public static readonly CVarDef<int> SoftMaxPlayers =
-            CVarDef.Create("game.soft_max_players", 30, CVar.SERVERONLY | CVar.ARCHIVE);
+            CVarDef.Create("game.soft_max_players", 50, CVar.SERVERONLY | CVar.ARCHIVE);
 
         /// <summary>
         /// Whether or not panic bunker is currently enabled.
@@ -374,6 +374,19 @@ namespace Content.Shared.CCVar
 
         public static readonly CVarDef<int> ZombiePlayersPerInfected =
             CVarDef.Create("zombie.players_per_infected", 10);
+
+        /*
+         * FleshCult
+         */
+
+        public static readonly CVarDef<int> FleshCultMinPlayers =
+            CVarDef.Create("fleshcult.min_players", 25);
+
+        public static readonly CVarDef<int> FleshCultMaxCultist =
+            CVarDef.Create("fleshcult.max_cultist", 6);
+
+        public static readonly CVarDef<int> FleshCultPlayersPerCultist =
+            CVarDef.Create("fleshcult.players_per_cultist", 7);
 
         /*
          * Pirates
@@ -564,7 +577,7 @@ namespace Content.Shared.CCVar
          */
 
         public static readonly CVarDef<int> HudTheme =
-            CVarDef.Create("hud.theme", 0, CVar.ARCHIVE | CVar.CLIENTONLY);
+            CVarDef.Create("hud.theme", 1, CVar.ARCHIVE | CVar.CLIENTONLY);
 
         public static readonly CVarDef<bool> HudHeldItemShow =
             CVarDef.Create("hud.held_item_show", true, CVar.ARCHIVE | CVar.CLIENTONLY);
@@ -968,6 +981,45 @@ namespace Content.Shared.CCVar
         /// </summary>
         public static readonly CVarDef<int> WhitelistMaxPlayers =
             CVarDef.Create("whitelist.max_players", int.MaxValue, CVar.SERVERONLY);
+        /*
+         * Prime Whitelist
+         */
+
+        /// <summary>
+        ///     Controls whether the server will deny any players that are not whitelisted in the Prime DB.
+        /// </summary>
+        public static readonly CVarDef<bool> PrimelistEnabled =
+            CVarDef.Create("primelist.enabled", false, CVar.SERVERONLY);
+
+        /// <summary>
+        ///     IP address of the Prime database server
+        /// </summary>
+        public static readonly CVarDef<string> PrimelistDatabaseIp =
+            CVarDef.Create("primelist.ip", string.Empty, CVar.SERVERONLY);
+
+        /// <summary>
+        ///     Port of the Prime database server
+        /// </summary>
+        public static readonly CVarDef<int> PrimelistDatabasePort =
+            CVarDef.Create("primelist.port", 3306, CVar.SERVERONLY);
+
+        /// <summary>
+        ///     Name of the Prime database server
+        /// </summary>
+        public static readonly CVarDef<string> PrimelistDatabaseName =
+            CVarDef.Create("primelist.database", string.Empty, CVar.SERVERONLY);
+
+        /// <summary>
+        ///     Username for the Prime database server
+        /// </summary>
+        public static readonly CVarDef<string> PrimelistDatabaseUsername =
+            CVarDef.Create("primelist.username", string.Empty, CVar.SERVERONLY | CVar.CONFIDENTIAL);
+
+        /// <summary>
+        ///     Password for the Prime database server
+        /// </summary>
+        public static readonly CVarDef<string> PrimelistDatabasePassword =
+            CVarDef.Create("primelist.password", string.Empty, CVar.SERVERONLY | CVar.CONFIDENTIAL);
 
         /*
          * VOTE
@@ -1289,6 +1341,12 @@ namespace Content.Shared.CCVar
         public static readonly CVarDef<float> AfkTime =
             CVarDef.Create("afk.time", 60f, CVar.SERVERONLY);
 
+        public static readonly CVarDef<bool> AfkTimeKickEnabled =
+            CVarDef.Create("afk.time_kick_enabled", true, CVar.SERVERONLY);
+
+        public static readonly CVarDef<float> AfkTimeKick =
+            CVarDef.Create("afk.time_kick", 600f, CVar.SERVERONLY);
+
         /*
          * IC
          */
@@ -1484,7 +1542,7 @@ namespace Content.Shared.CCVar
         /// Link to Discord server to show in the launcher.
         /// </summary>
         public static readonly CVarDef<string> InfoLinksDiscord =
-            CVarDef.Create("infolinks.discord", "", CVar.SERVER | CVar.REPLICATED);
+            CVarDef.Create("https://discord.gg/YWp7dkMDTG", "", CVar.SERVER | CVar.REPLICATED);
 
         /// <summary>
         /// Link to website to show in the launcher.
@@ -1520,13 +1578,13 @@ namespace Content.Shared.CCVar
         /// Link to the bug report form.
         /// </summary>
         public static readonly CVarDef<string> InfoLinksBugReport =
-            CVarDef.Create("infolinks.bug_report", "", CVar.SERVER | CVar.REPLICATED);
+            CVarDef.Create("https://discord.gg/YWp7dkMDTG", "", CVar.SERVER | CVar.REPLICATED);
 
         /// <summary>
         /// Link to site handling ban appeals. Shown in ban disconnect messages.
         /// </summary>
         public static readonly CVarDef<string> InfoLinksAppeal =
-            CVarDef.Create("infolinks.appeal", "", CVar.SERVER | CVar.REPLICATED);
+            CVarDef.Create("https://discord.gg/YWp7dkMDTG", "", CVar.SERVER | CVar.REPLICATED);
 
         /*
          * CONFIG
@@ -1581,16 +1639,5 @@ namespace Content.Shared.CCVar
         /// </summary>
         public static readonly CVarDef<int> GCMaximumTimeMs =
             CVarDef.Create("entgc.maximum_time_ms", 5, CVar.SERVERONLY);
-
-        /*
-         * Replays
-         */
-
-        /// <summary>
-        ///     Whether or not to record admin chat. If replays are being publicly distributes, this should probably be
-        ///     false.
-        /// </summary>
-        public static readonly CVarDef<bool> ReplayRecordAdminChat =
-            CVarDef.Create("replay.record_admin_chat", false, CVar.SERVERONLY);
     }
 }

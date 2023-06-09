@@ -21,17 +21,10 @@ namespace Content.Client.GameTicking.Managers
         [Dependency] private readonly IStateManager _stateManager = default!;
         [Dependency] private readonly IEntityManager _entityManager = default!;
         [Dependency] private readonly IConfigurationManager _configManager = default!;
-        [Dependency] private readonly BackgroundAudioSystem _backgroundAudio = default!;
-        [Dependency] private readonly SharedAudioSystem _audio = default!;
 
         [ViewVariables] private bool _initialized;
         private Dictionary<EntityUid, Dictionary<string, uint?>>  _jobsAvailable = new();
         private Dictionary<EntityUid, string> _stationNames = new();
-
-        /// <summary>
-        /// The current round-end window. Could be used to support re-opening the window after closing it.
-        /// </summary>
-        private RoundEndSummaryWindow? _window;
 
         [ViewVariables] public bool AreWeReady { get; private set; }
         [ViewVariables] public bool IsGameStarted { get; private set; }
@@ -134,17 +127,13 @@ namespace Content.Client.GameTicking.Managers
             if (message.LobbySong != null)
             {
                 LobbySong = message.LobbySong;
-                _backgroundAudio.StartLobbyMusic();
+                Get<BackgroundAudioSystem>().StartLobbyMusic();
             }
 
             RestartSound = message.RestartSound;
 
-            // Don't open duplicate windows (mainly for replays).
-            if (_window?.RoundId == message.RoundId)
-                return;
-
             //This is not ideal at all, but I don't see an immediately better fit anywhere else.
-            _window = new RoundEndSummaryWindow(message.GamemodeTitle, message.RoundEndText, message.RoundDuration, message.RoundId, message.AllPlayersEndInfo, _entityManager);
+            var roundEnd = new RoundEndSummaryWindow(message.GamemodeTitle, message.RoundEndText, message.RoundDuration, message.RoundId, message.AllPlayersEndInfo, _entityManager);
         }
 
         private void RoundRestartCleanup(RoundRestartCleanupEvent ev)
@@ -158,7 +147,7 @@ namespace Content.Client.GameTicking.Managers
                 return;
             }
 
-            _audio.PlayGlobal(RestartSound, Filter.Local(), false);
+            SoundSystem.Play(RestartSound, Filter.Empty());
 
             // Cleanup the sound, we only want it to play when the round restarts after it ends normally.
             RestartSound = null;

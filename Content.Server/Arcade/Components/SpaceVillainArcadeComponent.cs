@@ -36,19 +36,25 @@ namespace Content.Server.Arcade.Components
         [ViewVariables(VVAccess.ReadWrite)]
         [DataField("possibleFightVerbs")]
         private List<string> _possibleFightVerbs = new List<string>()
-            {"Defeat", "Annihilate", "Save", "Strike", "Stop", "Destroy", "Robust", "Romance", "Pwn", "Own"};
+        /// Corvax-Localization-Start
+            {"Победи", "Аннигилируй", "Спаси", "Ударь", "Останови", "Уничтожь", "Заробасти", "Добейся", "Отымей", "Завладей", };
+        /// Corvax-Localization-End
         [ViewVariables(VVAccess.ReadWrite)]
         [DataField("possibleFirstEnemyNames")]
         private List<string> _possibleFirstEnemyNames = new List<string>(){
-            "the Automatic", "Farmer", "Lord", "Professor", "the Cuban", "the Evil", "the Dread King",
-            "the Space", "Lord", "the Great", "Duke", "General"
+        /// Corvax-Localization-Start
+            "Автоматический", "Фермер", "Лорд", "Профессор", "Кубинец", "Злой", "Грозный Король",
+            "Космический", "Лорд", "Могучий", "Герцог", "Генерал"
+        /// Corvax-Localization-End
         };
         [ViewVariables(VVAccess.ReadWrite)]
         [DataField("possibleLastEnemyNames")]
         private List<string> _possibleLastEnemyNames = new List<string>()
         {
-            "Melonoid", "Murdertron", "Sorcerer", "Ruin", "Jeff", "Ectoplasm", "Crushulon", "Uhangoid",
-            "Vhakoid", "Peteoid", "slime", "Griefer", "ERPer", "Lizard Man", "Unicorn"
+        /// Corvax-Localization-Start
+            "Мелоноид", "Мурдетрон", "Волшебник", "Руина", "Джефф", "Эктоплазма", "Крушелон", "Унахгоид",
+            "Вакоид", "Петеоид", "слизень", "Грифер", "ЕРПшер", "Человек Ящерица", "Единорог"
+        /// Corvax-Localization-End
         };
         [ViewVariables(VVAccess.ReadWrite)]
         [DataField("possibleRewards", customTypeSerializer:typeof(PrototypeIdListSerializer<EntityPrototype>))]
@@ -57,10 +63,12 @@ namespace Content.Server.Arcade.Components
             "ToyMouse", "ToyAi", "ToyNuke", "ToyAssistant", "ToyGriffin", "ToyHonk", "ToyIan",
             "ToyMarauder", "ToyMauler", "ToyGygax", "ToyOdysseus", "ToyOwlman", "ToyDeathRipley",
             "ToyPhazon", "ToyFireRipley", "ToyReticence", "ToyRipley", "ToySeraph", "ToyDurand", "ToySkeleton",
-            "FoamCrossbow", "RevolverCapGun", "PlushieHampter", "PlushieLizard", "PlushieAtmosian", "PlushieSpaceLizard",
+            "FoamCrossbow", "RevolverCapGun", "PlushieLizard", "PlushieAtmosian", "PlushieSpaceLizard",
             "PlushieNuke", "PlushieCarp", "PlushieRatvar", "PlushieNar", "PlushieSnake", "Basketball", "Football",
             "PlushieRouny", "PlushieBee", "PlushieSlime", "BalloonCorgi", "ToySword", "CrayonBox", "BoxDonkSoftBox", "BoxCartridgeCap",
-            "HarmonicaInstrument", "OcarinaInstrument", "RecorderInstrument", "GunpetInstrument", "BirdToyInstrument", "PlushieXeno"
+            "HarmonicaInstrument", "OcarinaInstrument", "RecorderInstrument", "GunpetInstrument", "BirdToyInstrument", "PlushieXeno", 
+			"PlushieBartenderSlime2", "PlushieLizardQM", "PlushieBartenderSlime1", "PlushieInternalAffairsAgent", "PlushieMedicalWorker",
+			"PlushieServiceWorker", "PlushieCaptain", "PlushieHeadOfSecurity", "PlushieQuartermaster", "PlushieChiefMedicalOfficer"
         };
 
         [DataField("rewardMinAmount")]
