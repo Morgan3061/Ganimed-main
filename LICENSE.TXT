@@ -1,4 +1,4 @@
-Лицензия MIT
+MIT License
 
 Авторское право (c) 2017-2023 Space Wizards Federation
 
