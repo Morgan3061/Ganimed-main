@@ -1,7 +1,7 @@
 contact_links:
-  - name: Report a Security Vulnerability
-    url: https://github.com/space-wizards/space-station-14/blob/master/SECURITY.md
-    about: Please report security vulnerabilities privately so we can fix them before they are publicly disclosed.
-  - name: Request a Feature
-    url: https://discord.gg/rGvu9hKffJ
-    about: Submit feature requests on our Discord server (https://discord.gg/rGvu9hKffJ).
+  - name: Доложить о уязвимости в системе безопасности
+    url: https://github.com/ss14-ganimed/Ganimed-station/security/policy
+    about: Пожалуйста, сообщайте об уязвимостях в системе безопасности в личные сообщения, чтобы мы могли устранить их до того, как они станут достоянием общественности.
+  - name: Запросите добавление вашего приложения
+    url: https://discord.gg/YWp7dkMDTG
+    about: Отправьте своё приложение/бота на рассмотрение в наш дискорд (https://discord.gg/YWp7dkMDTG).
