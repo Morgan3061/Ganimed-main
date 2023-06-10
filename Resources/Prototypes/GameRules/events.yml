@@ -309,6 +309,7 @@
   - type: StationEvent
     earliestStart: 50
     weight: 2.5
+    minimumPlayers: 25
     duration: 1
   - type: ZombieRule
 
