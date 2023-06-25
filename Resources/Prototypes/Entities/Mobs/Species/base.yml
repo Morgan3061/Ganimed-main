@@ -20,6 +20,7 @@
     - CanPilot
     - FootstepSound
     - DoorBumpOpener
+    - ZombifyableByMelee
   - type: Reactive
     groups:
       Flammable: [ Touch ]
@@ -93,7 +94,6 @@
     sprite: Mobs/Species/Human/parts.rsi
     state: full
   - type: Sprite
-    netsync: false
     noRot: true
     drawdepth: Mobs
     layers:
@@ -319,7 +319,6 @@
       sprite: Mobs/Species/Human/parts.rsi
       state: full
     - type: Sprite
-      netsync: false
       drawdepth: Mobs
       noRot: true
       # TODO BODY Turn these into individual body parts?

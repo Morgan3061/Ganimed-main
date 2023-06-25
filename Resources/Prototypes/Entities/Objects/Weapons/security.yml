@@ -6,7 +6,6 @@
   components:
   - type: Sprite
     sprite: Objects/Weapons/Melee/stunbaton.rsi
-    netsync: false
     layers:
     - state: stunbaton_off
       map: [ "enum.ToggleVisuals.Layer" ]
@@ -101,12 +100,12 @@
     - type: TriggerOnProximity
       enabled: true
       cooldown: 5
+      triggerBehindWall: false
       shape:
         !type:PhysShapeCircle
           radius: 2
     - type: Anchorable
     - type: Sprite
-      netsync: false
       sprite: Objects/Weapons/pflash.rsi
       layers:
         - state: "off"
