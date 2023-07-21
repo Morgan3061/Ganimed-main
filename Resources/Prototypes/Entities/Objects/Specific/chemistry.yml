@@ -297,7 +297,7 @@
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 50
+        maxVol: 50 #ранньше было 20, увеличенно до 50
   - type: SolutionSpiker
     sourceSolution: food
   - type: DeleteOnTrigger
@@ -334,7 +334,7 @@
     tags:
       - PillCanister
   - type: Storage
-    capacity: 12
+    capacity: 12 #было 9 тут, увеличил до 12
     quickInsert: true
     areaInsert: true
     areaInsertRadius: 1
